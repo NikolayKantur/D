@@ -6544,7 +6544,7 @@ h1.inline {
 }
 
 .hentry {
-    padding-top: 4.3333%;
+    padding-top: 0;
     margin-left: 4.3%;
 }
 
@@ -6553,7 +6553,7 @@ h1.inline {
 }
 
 .entry-content, .entry-summary {
-    padding: 0 5% 5%;
+    padding: 5%;
 }
 
 .main-navigation {
@@ -7113,6 +7113,7 @@ small.is_author {
 
 #suggestUser .personal-area.row {
     margin-left: 0 !important;
+	text-align:left;
 }
 
 .post-rating {
@@ -7161,3 +7162,105 @@ iframe.wp-embedded-content {
     height: 135px !important;
     
 }
+
+/*---- пакет 54 -----*/
+
+.clr{
+	width:100%;
+	clear:both;
+}
+
+.article_header{
+	margin-bottom:5%;
+}
+
+.article_header-img{
+	height:150px;
+	float:left;
+	background-size:cover;
+	background-position:center;
+}
+
+.article_header-infoWrp{
+	float:left;
+}
+
+.article_header-titleWrp .entry-title,
+.article_header-titleWrp .entry-header{
+	padding:0px;
+	margin:0px;
+}
+
+.article_header-statWrp .add-to-favor-wrapper{
+	margin-bottom:2%!important;
+}
+
+.article_header-statWrp .label{
+	padding: .1em .3em .15em !important;
+	font-weight:200;
+}
+
+.article_header-metaWrp.entry-footer{
+	background-color:transparent;
+	padding:0px;
+	font-size:13px!important;
+}
+
+.article_header-metaWrp .posted-on:before,
+.article_header-metaWrp .byline:before,
+.article_header-metaWrp .cat-links:before,
+.article_header-metaWrp .tags-links:before,
+.article_header-metaWrp .comments-link:before,
+.article_header-metaWrp .entry-format:before,
+.article_header-metaWrp .edit-link:before,
+.article_header-metaWrp .full-size-link:before{
+	top:2px;
+}
+
+.article_header-authorWrp .author-info{
+	margin:0px;
+	margin-top:1.5%;
+	margin-bottom:1.5%;
+	padding:0px;
+	border-top:none;
+}
+
+.article_header-authorWrp .author-bio{
+	margin-bottom:1%;
+	font-size:14px;
+	margin-bottom:10px;
+}
+
+.article_header-authorWrp .author-avatar{
+	line-height:56px;
+	height:56px;
+	float:left;
+}
+
+.article_header-authorWrp .author-avatar img{
+	height:46px;
+	width:46px;
+	display:inline-block;
+}
+
+.article_header-authorWrp .person-desription{
+	text-align:center;
+}
+
+.article_header-authorWrp .author-title{
+	padding-top:0%;
+	margin:0px;
+	font-size:17px;
+	margin-bottom:10px;
+}
+
+.article_header-authorWrp .author-info .avatar{
+	margin-bottom:0px;
+}
+
+.article_header-authorWrp .author-bio p{
+	color:#717171;
+	margin-bottom:1%;
+}
+
+/* ------ END -------*/
