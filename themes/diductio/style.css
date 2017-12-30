@@ -7163,7 +7163,7 @@ iframe.wp-embedded-content {
     
 }
 
-/*---- пакет 54 -----*/
+/*---- article_header.php -----*/
 
 .clr{
 	width:100%;
@@ -7176,19 +7176,46 @@ iframe.wp-embedded-content {
 
 .article_header-img{
 	height:150px;
+	width:150px;
+	margin-right:2.5%;
+	margin-bottom:2.5%;
 	float:left;
 	background-size:cover;
 	background-position:center;
+	background-repeat:no-repeat;
 }
 
 .article_header-infoWrp{
+	width:100%;
 	float:left;
+	margin-right:0;
+}
+
+.article_header-infoWrp.withImg{
+	width:calc(100% - 150px - 2.5%);
+	float:left;
+	margin-right:0;
+}
+
+@media ( max-width:960px ){
+	.article_header-img,
+	.article_header-infoWrp{
+		width:100%;
+	}
+}
+
+.article_header-statWrp  .stat-col{
+	margin-right:5px;
 }
 
 .article_header-titleWrp .entry-title,
 .article_header-titleWrp .entry-header{
 	padding:0px;
 	margin:0px;
+}
+
+.article_header-titleWrp .entry-title a{
+	border-bottom:none;
 }
 
 .article_header-statWrp .add-to-favor-wrapper{
@@ -7248,10 +7275,9 @@ iframe.wp-embedded-content {
 }
 
 .article_header-authorWrp .author-title{
-	padding-top:0%;
+	padding-top:0.7%;
 	margin:0px;
 	font-size:17px;
-	margin-bottom:10px;
 }
 
 .article_header-authorWrp .author-info .avatar{
@@ -7261,6 +7287,14 @@ iframe.wp-embedded-content {
 .article_header-authorWrp .author-bio p{
 	color:#717171;
 	margin-bottom:1%;
+}
+
+.modal-title{
+	text-align:left;
+}
+
+.entry-header{
+	padding-top:5%;
 }
 
 /* ------ END -------*/

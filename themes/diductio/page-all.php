@@ -32,7 +32,19 @@
 				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
 				 */
 				 
-                get_template_part( 'content', get_post_format() );
+                ?>
+                    
+					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
+						<div class="entry-content <?=$removing_space_class;?>">
+							
+							<?php include(get_template_directory().'/view/article_header.php');?>
+							
+						</div>
+						
+					</article>
+					
+					<?php
                                  
 
 			// End the loop.

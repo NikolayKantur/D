@@ -18,13 +18,13 @@ if ($done_users) {
 
 	<?php if ( has_post_thumbnail() ){?>
 	
-	<div class="article_header-img col-md-3 col-xs-12" style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')"></div>
+	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')"></div>
 	
-	<div class="article_header-infoWrp col-md-9 col-xs-12 format-<?php echo get_post_format();?>">
+	<div class="article_header-infoWrp withImg format-<?php echo get_post_format();?>">
 	
 	<?php } else {?>
 	
-	<div class="article_header-infoWrp col-md-12 col-xs-12 format-<?php echo get_post_format();?>">
+	<div class="article_header-infoWrp format-<?php echo get_post_format();?>">
 	
 	<?php };?>
 
