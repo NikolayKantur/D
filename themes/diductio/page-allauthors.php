@@ -46,7 +46,7 @@ get_header(); ?>
     <?php do_action('all-peoples-header'); ?>
     <main id="main" class="site-main" role="main">
         <article id="users-page" class="page type-page status-publish hentry">
-            <header class="entry-header">
+            <header class="entry-header tall">
                 <h1 class="entry-title">Люди</h1>
                 <div class="entry-content all-users">
                     
