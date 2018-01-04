@@ -7,6 +7,7 @@ Author: Aleksey Novikov
 */
 register_activation_hook( __FILE__ , 'sbscr_install' );
 add_action('wp_ajax_subscribe', 'subscribe');
+add_action('subscriber_added', 'onSubscriberAdded', 2, 2);
 add_action('wp_ajax_tag_subscribe', 'tag_subscribe');
 add_action('wp_ajax_сategory_subscribe', 'category_subscribe');
 add_action('wp_enqueue_scripts', 'load_scripts', 99);
@@ -459,64 +460,69 @@ class Diductio_subsriber extends WP_Widget {
 		//обраезаем массив по колличеству из админки
 		$stream_n = array_slice($stream, 0, $number);
 		unset($stream);
+		
+		if( is_user_logged_in() ){
+		
+			$output .= $args['before_widget'];
+			if ( $title ) {
+				$output .= $args['before_title'] . $title . $args['after_title'];
+			}
+			
+			#stat stream
+			$output .= '<ul id="recentcomments">';
+			if(!$progress && !$comments ) {
+				$output .= '<li class="recentcomments">Ваша лента пуста</li>';
+			} elseif(!is_user_logged_in())
+				$output .= '<li class="recentcomments">Ваша лента пуста</li>';
+			else {
+				if ( is_array($stream_n) && $stream_n ) {
+				  foreach ( (array) $stream_n as $s) {
+						$user_info = get_user_by ('id', $s['user_id']);
+						$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+						
+						$output .= '<li class="recentcomments">';
+						$output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
+						$output .= get_avatar( $user_info->data->user_email, 20 );
+						$output .= "<span>";
+						$output .= $user_info->data->display_name;
+						
+						if($s['content'] === null){
+						  $small_text = "+ прогресс";
+						}else{
+						  $comments_count  = wp_count_comments($s['post_id']);
+						  $approved = $comments_count->approved;
 
-		$output .= $args['before_widget'];
-		if ( $title ) {
-			$output .= $args['before_title'] . $title . $args['after_title'];
+							$small_text = "+ комментарий";
+						}
+
+						$output .= "</span></a><small>". $small_text ."</small></div>";
+						$output .= "<div class='inline comment-content'>";
+						$output .= "<div class='comment-body'>";
+						if($s['content'] != null ){
+						  $output .= excerp_comment(get_comment($s['id'])->comment_content, 67);
+						  $output .= "<a class='link-style-1' href='"
+							. esc_url( get_comment_link( $s['id'] ) ) ."'>&nbsp;#</a><br>";
+						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
+							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
+							. get_the_title( $s['post_id'] ) . '</a>');
+						}else{
+						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
+							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
+							. get_the_title( $s['post_id'] ) . '</a>');
+						}
+						$output .= "<span></span></div>";
+						$output .= "</div>";
+						$output .= "</li>";
+					}
+				}
+
+			}
+			$output .= '</ul>';
+
+			##end stream
+		
 		}
 		
-		#stat stream
-		$output .= '<ul id="recentcomments">';
-		if(!$progress && !$comments ) {
-			$output .= '<li class="recentcomments">Ваша лента пуста</li>';
-		} elseif(!is_user_logged_in())
-			$output .= '<li class="recentcomments">Ваша лента пуста</li>';
-		else {
-			if ( is_array($stream_n) && $stream_n ) {
-			  foreach ( (array) $stream_n as $s) {
-					$user_info = get_user_by ('id', $s['user_id']);
-					$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
-					
-					$output .= '<li class="recentcomments">';
-					$output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
-					$output .= get_avatar( $user_info->data->user_email, 20 );
-					$output .= "<span>";
-					$output .= $user_info->data->display_name;
-					
-					if($s['content'] === null){
-					  $small_text = "+ прогресс";
-					}else{
-					  $comments_count  = wp_count_comments($s['post_id']);
-					  $approved = $comments_count->approved;
-
-						$small_text = "+ комментарий";
-					}
-
-					$output .= "</span></a><small>". $small_text ."</small></div>";
-					$output .= "<div class='inline comment-content'>";
-					$output .= "<div class='comment-body'>";
-					if($s['content'] != null ){
-					  $output .= excerp_comment(get_comment($s['id'])->comment_content, 67);
-					  $output .= "<a class='link-style-1' href='"
-						. esc_url( get_comment_link( $s['id'] ) ) ."'>&nbsp;#</a><br>";
-					  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
-						. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
-						. get_the_title( $s['post_id'] ) . '</a>');
-					}else{
-					  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
-						. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
-						. get_the_title( $s['post_id'] ) . '</a>');
-					}
-					$output .= "<span></span></div>";
-					$output .= "</div>";
-					$output .= "</li>";
-				}
-			}
-
-		}
-		$output .= '</ul>';
-
-		##end stream
 		$output .= $args['after_widget'];
 		echo $output;
 
@@ -592,10 +598,10 @@ function getMyPostCount()
 
 function suggestUsers()
 {
-	global $st, $post;
+	global $st, $post, $current_user;
 	if (is_user_logged_in()) {
 		$suggesting_users = getSuggestingUsers(get_current_user_id(), $post->ID);
-        pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st'));
+        pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st', 'post', 'current_user'));
 	}
 }
 
@@ -604,24 +610,35 @@ function suggest_me_user()
     global $dPost, $wpdb;
     
     $url     = wp_get_referer();
-	$post_id = url_to_postid( $url );
+	$post_id = url_to_postid($url);
 	
 	$users = $_POST['users'];
 	$include = $exclude = [];
 	
 	foreach ($users as $user) {
-		if($user['alreadyHas'] == 'true') {
+		if($user['alreadyHas'] == 'true' && $user['wasChecked'] == 'false') {
 			$include[] = $user;
 			continue;
 		}
 		
-		$exclude[] = $user;
+		if($user['alreadyHas'] == 'false' && $user['wasChecked'] == 'true') {
+			$exclude[] = $user;
+		}
 	}
+	
+	
+	// exclude first
+	$exclude_ids = implode(array_map(function ($item) {
+		return $item['id'];
+	}, $exclude), ',');
+	$sql = "DELETE FROM `wp_user_add_info` WHERE `user_id` IN ({$exclude_ids}) AND `post_id` = {$post_id}  ";
+	$wpdb->query($sql);
 	
 	// include
 	$already_subscribed = getUsersByPost($post_id);
 	foreach ($include as $user) {
 		if (!in_array($user['id'], $already_subscribed)) {
+			do_action('subscriber_added', $user, $post_id);
 			add_post_to_statistic($post_id, $user['id']);
 			$dPost->addToFavorite($post_id, $user['id']);
 		}
@@ -663,6 +680,12 @@ function getSuggestingUsers($user_id, $post_id)
 	return (array)$all_users;
 }
 
+/**
+ * Is provided user has subsribed to me
+ *
+ * @param  WP_User $user - User object
+ * @return bool          - Is user subsribed
+ */
 function isSubsribedToMe($user)
 {
 	$me  = get_current_user_id();
@@ -676,6 +699,12 @@ function isSubsribedToMe($user)
 	return false;
 }
 
+/**
+ * Getting all users from statistic table by Post ID
+ *
+ * @param  int   $post_id - ID of the Post
+ * @return array $result  - Users of the
+ */
 function getUsersByPost($post_id)
 {
 	global $wpdb;
@@ -689,6 +718,55 @@ function getUsersByPost($post_id)
 	
 	return $users;
 }
+
+/**
+ * Fire when someone is adding subsribers to the post
+ *
+ * @param WP_User     $user - User which has been subcribed
+ * @param int $post_id - Post ID
+ * @return bool
+ */
+function onSubscriberAdded($user, $post_id)
+{
+	if ($user['id'] == get_current_user_id()) {
+		return false;
+	}
+	
+	$subject = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['subject'];
+	$message = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['body'];
+	
+	$added_to = get_user_by('id', $user['id']);
+	$current_user = get_current_user_id();
+	$user_info = get_user_by('id', $current_user);
+	
+	$post_url = get_permalink($post_id);
+	$post_name = get_the_title($post_id);
+	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+	
+	$post_format = get_post_format($post_id);
+	$translate       = array(
+		'aside'       => 'Знание',
+		'chat'        => 'Голосование',
+		'image'       => 'Тест',
+		'gallery'     => 'Задача',
+		'quote'       => 'Проект',
+	);
+	
+	$find = array('{post_link}', '{user_link}', '{post_format}');
+	$replace = array(
+		sprintf("<a href='%s'>%s</a>", $post_url, $post_name),
+		sprintf("<a href='%s'>%s</a>", $user_link, $user_info->display_name),
+		$translate[$post_format]
+	);
+	$message = str_replace($find, $replace, $message);
+	
+	$headers = array('Content-Type: text/html; charset=UTF-8');
+	$res = wp_mail($added_to->user_email, $subject, $message, $headers);
+}
+
+/**
+ * Hooks subsriber init
+ */
 function subscriber_init()
 {
 	add_action('wp_ajax_nopriv_suggestUsers', 'suggest_me_user');
