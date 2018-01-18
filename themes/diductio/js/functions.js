@@ -135,8 +135,8 @@
 					$sidebar.attr( 'style', 'position: fixed;' );
 				}
 			} else {
-				top = bottom = false;
-				topOffset = ( $sidebar.offset().top > 0 ) ? $sidebar.offset().top - adminbarOffset : 0;
+				top = 0;
+				topOffset = ( $sidebar.offset().top > 54 ) ? $sidebar.offset().top - adminbarOffset - 54 : 54;
 				$sidebar.attr( 'style', 'top: ' + topOffset + 'px;' );
 			}
 		} else if ( ! top ) {
@@ -174,5 +174,9 @@
 			setTimeout( resizeAndScroll, 100 * i );
 		}
 	} );
+	
+	$('.mobileNav').click(function(){
+		$('.menu-header').toggleClass('active');
+	})
 
 } )( jQuery );

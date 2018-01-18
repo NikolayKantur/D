@@ -9,7 +9,7 @@
 
 	<div id="primary" class="content-area"> 	
             
-                <?php do_action('index-head'); ?>              
+                <?php //do_action('index-head'); ?>              
   
             
 		<main id="main" class="site-main homepage-main" role="main">

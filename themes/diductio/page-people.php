@@ -41,7 +41,7 @@ $user_query = new WP_User_Query($args);
 get_header(); ?>
 
 	<div id="primary" class="content-area">
-	  	<?php do_action('all-peoples-header'); ?>
+	  	<?php //do_action('all-peoples-header'); ?>
 		<main id="main" class="site-main" role="main">
 			<article id="users-page" class="page type-page status-publish hentry">
 				<header class="entry-header">

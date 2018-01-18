@@ -27,7 +27,7 @@ $cat = get_query_var('cat');
    $category = get_category ($cat);
 ?>
 	<section id="primary" class="content-area">
-		<?php do_action('archive-header'); ?>
+		<?php// do_action('archive-header'); ?>
 		<main id="main" class="site-main" role="main">
 		<?php if ( have_posts() ) : ?>
 
