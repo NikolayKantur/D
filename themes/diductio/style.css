@@ -7383,6 +7383,10 @@ iframe.wp-embedded-content {
 		width:100%;
 		padding:0px 10px;
 	}
+	
+	.article_header-infoWrp.withImg{
+		width:auto;
+	}
 }
 
 .undertitle{
