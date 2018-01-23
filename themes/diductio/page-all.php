@@ -52,7 +52,7 @@
 			
 			$postPerPage = get_option('posts_per_page');
 			
-			echo do_shortcode('[ajax_load_more offset="'.$postPerPage.'" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
+			echo do_shortcode('[ajax_load_more post_status="any" offset="'.$postPerPage.'" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
 
 			/* Previous/next page navigation.
 			the_posts_pagination( array(
