@@ -22,30 +22,32 @@
 </head>
 
 <body <?php body_class(); ?>>
+<div class="top-bar">
+	<header id="masthead" class="" role="banner">
+		<div class="col-md-3 site-branding">
+			<?php
+				twentyfifteen_the_custom_logo();
+
+				if ( is_front_page() && is_home() ) : ?>
+					<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<div class="undertitle">Создан для развития</div>
+				<?php else : ?>
+					<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+					<div class="undertitle">Создан для развития</div>
+				<?php endif;?>
+			<button class="secondary-toggle"><?php _e( 'Menu and widgets', 'diductio' ); ?></button>
+		</div><!-- .site-branding -->
+		<div class="col-md-9">
+			<div class="mobileNav">Разделы</div>
+			<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'main' ) ); ?>
+		</div>
+		</header><!-- .site-header -->
+
+</div>
 <div id="page" class="hfeed site">
 	<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'diductio' ); ?></a>
 
 	<div id="sidebar" class="sidebar">
-		<header id="masthead" class="site-header" role="banner">
-			<div class="site-branding">
-				<?php
-					twentyfifteen_the_custom_logo();
-
-					if ( is_front_page() && is_home() ) : ?>
-						<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-					<?php else : ?>
-						<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-					<?php endif;
-
-					$description = get_bloginfo( 'description', 'display' );
-					if ( $description || is_customize_preview() ) : ?>
-						<p class="site-description"><?php echo $description; ?></p>
-					<?php endif;
-				?>
-				<button class="secondary-toggle"><?php _e( 'Menu and widgets', 'diductio' ); ?></button>
-			</div><!-- .site-branding -->
-		</header><!-- .site-header -->
-
 		<?php get_sidebar(); ?>
 	</div><!-- .sidebar -->
 
