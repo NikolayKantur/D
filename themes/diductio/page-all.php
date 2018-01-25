@@ -9,7 +9,7 @@
 
 	<div id="primary" class="content-area"> 	
             
-                <?php do_action('index-head'); ?>              
+                <?php //do_action('index-head'); ?>              
   
             
 		<main id="main" class="site-main homepage-main" role="main">
@@ -49,13 +49,17 @@
 
 			// End the loop.
 			endwhile;
+			
+			$postPerPage = get_option('posts_per_page');
+			
+			echo do_shortcode('[ajax_load_more post_status="any" offset="'.$postPerPage.'" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
 
-			// Previous/next page navigation.
+			/* Previous/next page navigation.
 			the_posts_pagination( array(
 				'prev_text'          => __( '->', 'diductio' ),
 				'next_text'          => __( '<-', 'diductio' ),
 				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'diductio' ) . ' </span>',
-			) );
+			) );*/
 
                         // If no content, include the "No posts found" template.
                         else :

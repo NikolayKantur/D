@@ -78,6 +78,7 @@ if (!function_exists('twentyfifteen_setup')) :
         
         // This theme uses wp_nav_menu() in two locations.
         register_nav_menus(array(
+            'main' => 'Меню в верхней панели',
             'primary' => __('Primary Menu', 'diductio'),
             'social' => __('Social Links Menu', 'diductio'),
         ));
