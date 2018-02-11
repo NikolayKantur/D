@@ -1246,6 +1246,8 @@ img.aligncenter {
     min-height: 2em;
     padding-right: 60px;
     position: relative;
+
+    overflow: hidden;
 }
 
 .site-title {
@@ -1253,13 +1255,19 @@ img.aligncenter {
     font-size: 22px;
     font-size: 2.2rem;
     font-weight: 700;
-    line-height: 1.3636;
+    line-height: 1;
     margin-bottom: 0;
+
+    display: inline;
 }
 
 .custom-logo {
-    max-height: 84px;
+    float: left;
+    margin-right: 10px;
     width: auto;
+
+    max-height: 50px;
+        height: 50px;
 }
 
 .wp-custom-logo .site-title {
@@ -2667,7 +2675,7 @@ p > video {
     .site-title {
         font-size: 22px;
         font-size: 2.2rem;
-        line-height: 1.0909;
+        line-height: 1.5;
     }
 
     .site-description {
@@ -2765,6 +2773,11 @@ p > video {
 
     .page-content {
         padding: 9.0909%;
+    }
+
+    .custom-logo {
+        max-height: 60px;
+        height: 60px;
     }
 
     .site-footer {
@@ -3034,15 +3047,15 @@ p > video {
     .site-title {
         font-size: 29px;
         font-size: 2.9rem;
-        line-height: 1.2069;
+        line-height: 1;
     }
 
     .custom-logo {
-        max-height: 105px;
+        
     }
 
-    .wp-custom-logo .site-title {
-        margin-top: 0.482758621em;
+    .site-branding .site-title {
+        margin-top: 0.8em;
     }
 
     .site-description {
@@ -3663,11 +3676,11 @@ p > video {
     .site-title {
         font-size: 32px;
         font-size: 3.2rem;
-        line-height: 1.25;
+        line-height: 0.8;
     }
 
     .custom-logo {
-        max-height: 104px;
+        
     }
 
     .wp-custom-logo .site-title {
@@ -4309,7 +4322,7 @@ p > video {
     }
 
     .custom-logo {
-        max-height: none;
+
     }
 
     .wp-custom-logo .site-title {
@@ -5472,9 +5485,13 @@ p > video {
     .site-title {
         font-size: 27px;
         font-size: 2.7rem;
-        line-height: 1.1852;
+        line-height: 1.1667;
     }
 
+    .custom-logo {
+        max-height: 60px;
+        height: 60px;
+    }
     .wp-custom-logo .site-title {
         margin-top: 0.592592593em;
     }
