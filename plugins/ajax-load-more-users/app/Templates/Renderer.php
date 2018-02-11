@@ -2,7 +2,8 @@
 
 namespace AjaxLoadMoreUsers\App\Templates;
 
-class Renderer {
+class Renderer 
+{
     /**
      * @param string $template_name Template alias without path or extension
      * @param array $params 

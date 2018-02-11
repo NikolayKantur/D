@@ -2,8 +2,9 @@
 
 namespace AjaxLoadMoreUsers\App\AdminInterface\Pages\Models;
 
-class Settings {
-    public function get_page_params() 
+class Settings 
+{
+    public function getPageParams() 
     {
         return array(
             'menu_title' => __('- Users', 'ajax-load-more-users'),

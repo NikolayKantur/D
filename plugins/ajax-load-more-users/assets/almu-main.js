@@ -15,6 +15,7 @@
         var include = $load_more_button.attr('data-include') || null;
         var orderby = $load_more_button.attr('data-orderby') || null;
         var order = $load_more_button.attr('data-order') || null;
+        var per_page = $load_more_button.attr('data-per-page') || null;
 
         // Main action, in this handler we load more users by ajax
         $window.on('scroll', function() {
@@ -44,6 +45,7 @@
                     'include': include,
                     'orderby': orderby,
                     'order': order,
+                    'per_page': per_page,
                     'nonce': l10n.nonce,
                 };
 

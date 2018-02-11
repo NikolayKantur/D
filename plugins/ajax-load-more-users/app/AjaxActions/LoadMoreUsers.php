@@ -2,10 +2,13 @@
 
 namespace AjaxLoadMoreUsers\App\AjaxActions;
 
-class LoadMoreUsers {
-    const USERS_PER_PAGE = 10;
+use AjaxLoadMoreUsers\App\UserQuery;
 
+class LoadMoreUsers 
+{
     private $allowed_args = ['include', 'roles', 'orderby', 'order'];
+
+    private $custom_order_modes = array('comments_count');
 
     public function execute() 
     {
@@ -27,16 +30,23 @@ class LoadMoreUsers {
         ];
 
         // Get current page and other query args
+        $UsersQueryWrapper = new UserQuery\Wrapper();
+        
+        $users_per_page = $UsersQueryWrapper::USERS_PER_PAGE;
+        if (isset($_POST['per_page'])) {
+            $users_per_page = (int)$_POST['per_page'];
+        }
+
         $current_page = $_POST['current_page'];
         if (!is_numeric($current_page)) {
             $current_page = 2;
         }
         
-        $offset = ($current_page - 1) * self::USERS_PER_PAGE;
+        $offset = ($current_page - 1) * $users_per_page;
         
         // Build default and user arguments
         $default_args = array(
-            'number' => self::USERS_PER_PAGE,
+            'number' => $users_per_page,
             'offset' => $offset,
             'paged' => $current_page,
 
@@ -48,8 +58,8 @@ class LoadMoreUsers {
         // Build query arguments array
         $query_args = array_merge($default_args, $user_args);
 
-        // Instance query
-        $UserQuery = new \WP_User_Query($query_args);
+        // Get Wp_User_Query via Wrapper
+        $UserQuery = $UsersQueryWrapper->getUsersQuery($query_args);
 
         // Create layout and set it to response
         ob_start();
@@ -61,10 +71,10 @@ class LoadMoreUsers {
 
         // Get total pages count
         $total_users = $UserQuery->get_total();
-        $total_pages = ceil($total_users / self::USERS_PER_PAGE);
+        $total_pages = ceil($total_users / $users_per_page);
 
         // If all users are grabbed or no results more
-        if($current_page >= $total_pages || !count($UserQuery->results)) {
+        if ($current_page >= $total_pages || !count($UserQuery->results)) {
             $response['data']['done'] = true;
         }
 
@@ -79,11 +89,12 @@ class LoadMoreUsers {
      * @param array $user_arguments 
      * @return array
      */
-    private function fill_arguments_from(Array $user_arguments) {
+    private function fill_arguments_from(Array $user_arguments) 
+    {
         $args = [];
         
         foreach ($user_arguments as $arg_alias => $arg_value) {
-            if(!in_array($arg_alias, $this->allowed_args) || !$arg_value) {
+            if (!in_array($arg_alias, $this->allowed_args) || !$arg_value) {
                 continue;
             }
 

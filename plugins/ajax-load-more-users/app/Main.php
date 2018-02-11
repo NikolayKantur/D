@@ -12,29 +12,29 @@ class Main {
             return;
         }
 
-        $this->init_language();
-        $this->add_shortcode();
+        $this->initLanguage();
+        $this->addShortcode();
 
         // Add assets
-        add_action('wp_enqueue_scripts', [$this, 'add_client_assets'], 100);
-        add_action('wp_enqueue_scripts', [$this, 'localize_client_assets'], 100);
+        add_action('wp_enqueue_scripts', [$this, 'addClientAssets'], 100);
+        add_action('wp_enqueue_scripts', [$this, 'localizeClientAssets'], 100);
 
         // Ajax actions
-        $this->add_ajax_actions();
+        $this->addAjaxActions();
 
-        $this->init_admin_interface();
+        $this->initAdminInterface();
     }
 
-    private function init_admin_interface() 
+    private function initAdminInterface() 
     {
         $SettingsModel = new Pages\Models\Settings;
 
         $SettingsController = new Pages\Controllers\Settings($SettingsModel);
         $SettingsView = new Pages\Views\Settings($SettingsController, $SettingsModel);
         
-        $SettingsController->set_view($SettingsView);
+        $SettingsController->setView($SettingsView);
 
-        add_action('admin_menu', [$SettingsController, 'register_page'], 10);
+        add_action('admin_menu', [$SettingsController, 'registerPage'], 10);
     }
 
     /**
@@ -43,7 +43,7 @@ class Main {
      * 
      * @return null
      */
-    private function add_ajax_actions() 
+    private function addAjaxActions() 
     {
         $ajax_actions = array(
             'LoadMoreUsers' => 'almu_load_more_users',
@@ -63,7 +63,7 @@ class Main {
      * 
      * @return null
      */
-    public function add_shortcode() 
+    public function addShortcode() 
     {
         $LoadUsersShortcode = new Shortcodes\AjaxLoadMoreUsers;
 
@@ -75,7 +75,7 @@ class Main {
      * 
      * @return null
      */
-    private function init_language() 
+    private function initLanguage() 
     {
         $languages_folder = \AjaxLoadMoreUsers\PLUGIN_FOLDER . '/languages/';
 
@@ -87,7 +87,7 @@ class Main {
      * 
      * @return null
      */
-    public function add_client_assets() 
+    public function addClientAssets() 
     {
         $url = plugins_url('/assets/', \AjaxLoadMoreUsers\PLUGIN_FILE);
 
@@ -111,7 +111,7 @@ class Main {
      * 
      * @return null
      */
-    public function localize_client_assets() 
+    public function localizeClientAssets() 
     {
         wp_localize_script('almu-script', 'l10n', [
             'ajax_url' => admin_url('admin-ajax.php'),

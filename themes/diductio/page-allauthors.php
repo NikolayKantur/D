@@ -8,9 +8,10 @@ $all_authors = array_map(function ($author) {
     return $author['post_author'];
 }, Did_Posts::getAllAuthors());
 
-$UserQuery = Did_UserQuery::getUserQuery(array(
+$UserQuery = Did_Users::getUsersQuery(array(
     'include' => implode(',', $all_authors),
     'orderby' => 'post_count',
+    'number' => 10,
 ));
 
 get_header(); ?>
@@ -38,7 +39,7 @@ get_header(); ?>
             </header>
         </article>
 
-        <?php echo do_shortcode('[ajax_load_more_users include="' . implode(',', $all_authors) . '"]'); ?>
+        <?php echo do_shortcode('[ajax_load_more_users include="' . implode(',', $all_authors) . '" per_page="10"]'); ?>
     </main><!-- .site-main -->
 </div><!-- .content-area -->
 

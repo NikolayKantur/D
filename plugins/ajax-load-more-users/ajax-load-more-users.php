@@ -24,8 +24,7 @@ function run()
 
 function autoload($class_name) 
 {
-    if (strpos($class_name, __NAMESPACE__) === false) 
-    {
+    if (strpos($class_name, __NAMESPACE__) === false) {
         return;
     }
 

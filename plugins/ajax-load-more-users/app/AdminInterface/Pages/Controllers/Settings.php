@@ -2,7 +2,8 @@
 
 namespace AjaxLoadMoreUsers\App\AdminInterface\Pages\Controllers;
 
-class Settings {
+class Settings 
+{
     public function __construct($Model) 
     {
         $this->Model = $Model;
@@ -13,12 +14,12 @@ class Settings {
         $this->View->display();
     }
 
-    public function set_view($View) {
+    public function setView($View) {
         $this->View = $View;
     }
 
-    public function register_page() {
-        $params = $this->Model->get_page_params();
+    public function registerPage() {
+        $params = $this->Model->getPageParams();
 
         add_submenu_page(
             $params['parent'],

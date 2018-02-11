@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ajax-load-more-users\n"
 "Report-Msgid-Bugs-To: Translator Name <no@email.com>\n"
-"POT-Creation-Date: 2018-02-11 12:08+0300\n"
+"POT-Creation-Date: 2018-02-11 18:24+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,15 +24,15 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Poedit-SearchPathExcluded-2: assets\n"
 
-#: app/AdminInterface/Pages/Models/Settings.php:9
+#: app/AdminInterface/Pages/Models/Settings.php:10
 msgid "- Users"
 msgstr ""
 
-#: app/AdminInterface/Pages/Models/Settings.php:10
+#: app/AdminInterface/Pages/Models/Settings.php:11
 msgid "Ajax Load More Users"
 msgstr ""
 
-#: app/Shortcodes/AjaxLoadMoreUsers.php:19
+#: app/Shortcodes/AjaxLoadMoreUsers.php:20
 msgid "Load More"
 msgstr "Загрузить еще"
 
@@ -68,3 +68,11 @@ msgstr ""
 "Используйте параметр шорткода <code>include</code>, перечисляя ID "
 "пользователей через запятую, чтобы загружать лишь пользователей с желаемыми "
 "ID."
+
+#: view/settings.php:11
+msgid ""
+"Also <code>per_page</code>, <code>order</code> and <code>orderby</code> "
+"parameters are supported."
+msgstr ""
+"Также поддерживаются параметры <code>per_page</code>, <code>order</code> and "
+"<code>orderby</code>."

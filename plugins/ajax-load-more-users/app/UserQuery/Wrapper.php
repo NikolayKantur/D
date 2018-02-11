@@ -1,19 +1,20 @@
 <?php
 
-class Did_UserQuery
+namespace AjaxLoadMoreUsers\App\UserQuery;
+
+/**
+ * Just wrapper over native WP_User_Query class.
+ * Generate query args and create new WP_User_Query object.
+ */
+class Wrapper 
 {
     const USERS_PER_PAGE = 10;
 
-    /**
-     * Generate and return WP_User_Query object.
-     * 
-     * @param Array $args Arguments for WP_User_Query
-     * @return object WP_User_Query
-     */
-    public static function getUserQuery(Array $args = array()) {
+    public function getUsersQuery(Array $args = array()) 
+    {
         $users_per_page = self::USERS_PER_PAGE;
         
-        if(isset($args['number'])) {
+        if (isset($args['number'])) {
             $users_per_page = (int)$args['number'];
         }
 
@@ -31,8 +32,11 @@ class Did_UserQuery
 
         $query_args = array_merge($default_args, $args);
 
+        $CustomOrdersManager = new CustomOrdersManager();
+        $query_args = $CustomOrdersManager->applyCustomOrder($query_args);
+
         // Create the WP_User_Query object
-        $UserQuery = new WP_User_Query($query_args);
+        $UserQuery = new \WP_User_Query($query_args);
 
         return $UserQuery;
     }
