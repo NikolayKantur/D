@@ -13,6 +13,8 @@
 
         var roles = $load_more_button.attr('data-roles') || null;
         var include = $load_more_button.attr('data-include') || null;
+        var orderby = $load_more_button.attr('data-orderby') || null;
+        var order = $load_more_button.attr('data-order') || null;
 
         // Main action, in this handler we load more users by ajax
         $window.on('scroll', function() {
@@ -40,6 +42,8 @@
                     'current_page': current_page,
                     'roles': roles,
                     'include': include,
+                    'orderby': orderby,
+                    'order': order,
                     'nonce': l10n.nonce,
                 };
 

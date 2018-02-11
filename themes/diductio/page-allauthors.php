@@ -10,6 +10,7 @@ $all_authors = array_map(function ($author) {
 
 $UserQuery = Did_UserQuery::getUserQuery(array(
     'include' => implode(',', $all_authors),
+    'orderby' => 'post_count',
 ));
 
 get_header(); ?>
