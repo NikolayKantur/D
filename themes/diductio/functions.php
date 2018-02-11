@@ -161,6 +161,16 @@ function twentyfifteen_widgets_init()
         'before_title' => '<h2 class="widget-title">',
         'after_title' => '</h2>',
     ));
+
+    register_sidebar(array(
+        'name' => __('Header', 'diductio'),
+        'id' => 'sidebar-header',
+        'description' => __('Add widgets here to appear in your header.', 'diductio'),
+        'before_widget' => '',
+        'after_widget' => '',
+        'before_title' => '',
+        'after_title' => '',
+    ));
 }
 
 add_action('widgets_init', 'twentyfifteen_widgets_init');
