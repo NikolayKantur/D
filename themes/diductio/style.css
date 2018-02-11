@@ -2627,6 +2627,15 @@ p > video {
     margin-bottom: 0;
 }
 
+.no-results .page-content {
+    margin-left: 4.3333%;
+}
+
+.no-results .page-content .search-form label,
+.no-results .page-content .search-form .search-field {
+    width: 100%;
+}
+
 /**
  * 16.0 Media Queries
  */

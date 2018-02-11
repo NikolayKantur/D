@@ -1,4 +1,8 @@
 <?php
+if(!isset($st)) {
+	global $st;
+}
+
 $post_statistic = $st->get_course_info($post->ID);
 $post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
 $post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
