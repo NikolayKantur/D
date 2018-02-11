@@ -16,13 +16,28 @@ if ($done_users) {
     $done_args['include'] = $done_users;
     $done_users_array = new WP_User_Query($done_args);
 }
+
+$post_formats_map = array(
+	'aside' => 'Знание',
+	'image' => 'Тест',
+	'quote' => 'Проект',
+	'video' => 'Видео',
+	'gallery' => 'Задача',
+	'chat' => 'Голосование',
+);
+
+$current_post_format = get_post_format();
+$current_post_format_title = $post_formats_map[$current_post_format];
 ?>
 
 <div class="article_header">
-
 	<?php if ( has_post_thumbnail() ){?>
 	
-	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')"></div>
+	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')">
+		<?php if(!is_single()) : ?>
+			<span class="label label-success label-post-format"><?php echo $current_post_format_title ?></span>
+		<?php endif; ?>
+	</div>
 	
 	<div class="article_header-infoWrp withImg format-<?php echo get_post_format();?>">
 	

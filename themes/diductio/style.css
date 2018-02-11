@@ -1258,7 +1258,7 @@ img.aligncenter {
     line-height: 1;
     margin-bottom: 0;
 
-    display: inline;
+    display: inline-block;
 }
 
 .custom-logo {
@@ -7315,6 +7315,12 @@ iframe.wp-embedded-content {
 	background-size:cover;
 	background-position:center;
 	background-repeat:no-repeat;
+}
+
+.article_header-img .label-post-format {
+    position: relative;
+    top: 7px;
+    left: 7px;
 }
 
 .article_header-infoWrp{
