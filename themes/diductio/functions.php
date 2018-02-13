@@ -137,12 +137,23 @@ if (!function_exists('twentyfifteen_setup')) :
          * specifically font, colors, icons, and column width.
          */
         add_editor_style(array('css/editor-style.css', 'genericons/genericons.css', twentyfifteen_fonts_url()));
-        
+
+       
         // Indicate widget sidebars can use selective refresh in the Customizer.
         add_theme_support('customize-selective-refresh-widgets');
     }
 endif; // twentyfifteen_setup
 add_action('after_setup_theme', 'twentyfifteen_setup');
+
+function add_custom_style() {
+    wp_enqueue_style(
+        'custom-style', 
+        get_template_directory_uri() . '/custom-style.css', 
+        null,
+        '2018-02-13'
+    );
+}
+add_action('wp_enqueue_scripts', 'add_custom_style', 9999);
 
 /**
  * Register widget area.
