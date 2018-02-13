@@ -18,25 +18,24 @@ if ($done_users) {
 }
 
 $post_formats_map = array(
-	'aside' => 'Знание',
-	'image' => 'Тест',
-	'quote' => 'Проект',
-	'video' => 'Видео',
-	'gallery' => 'Задача',
-	'chat' => 'Голосование',
+	'aside' => ['Знание', 'success'],
+	'image' => ['Тест', 'success'],
+	'quote' => ['Проект', 'important'],
+	'video' => ['Видео', 'success'],
+	'gallery' => ['Задача', 'important'],
+	'chat' => ['Голосование', 'important'],
 );
 
 $current_post_format = get_post_format();
-$current_post_format_title = $post_formats_map[$current_post_format];
+$current_post_format_title = $post_formats_map[$current_post_format][0];
+$current_post_format_color = $post_formats_map[$current_post_format][1];
 ?>
 
 <div class="article_header">
 	<?php if ( has_post_thumbnail() ){?>
 	
 	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')">
-		<?php if(!is_single()) : ?>
-			<span class="label label-success label-post-format"><?php echo $current_post_format_title ?></span>
-		<?php endif; ?>
+		<span class="label label-<?php echo $current_post_format_color ?> label-post-format"><?php echo $current_post_format_title ?></span>
 	</div>
 	
 	<div class="article_header-infoWrp withImg format-<?php echo get_post_format();?>">
