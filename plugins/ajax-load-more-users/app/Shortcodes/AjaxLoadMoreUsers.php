@@ -21,6 +21,7 @@ class AjaxLoadMoreUsers
 
             'roles' => array(),
             'include' => null,
+            'exclude' => null,
             'orderby' => null,
             'order' => null,
             'per_page' => null,

@@ -1,11 +1,12 @@
 (function($) {
-    var $document = $(document);
-    var $window = $(window);
-
     // Starts from 2nd page every time because the first already loaded earlier
     var current_page = 2;
 
-    $document.on('ready', function() {
+    var $document = $(document);
+
+    // $document.on('ready', function() {
+        var $window = $(window);
+
         var $load_more_button = $document.find('#almu-load-more');
         var $load_more_button_wrap = $load_more_button.parent();
 
@@ -102,5 +103,5 @@
                     break;
             }
         }
-    });
+    // });
 })(jQuery);

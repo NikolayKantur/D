@@ -6,7 +6,7 @@ use AjaxLoadMoreUsers\App\UserQuery;
 
 class LoadMoreUsers 
 {
-    private $allowed_args = ['include', 'roles', 'orderby', 'order'];
+    private $allowed_args = ['include', 'exclude', 'roles', 'orderby', 'order'];
 
     private $custom_order_modes = array('comments_count');
 

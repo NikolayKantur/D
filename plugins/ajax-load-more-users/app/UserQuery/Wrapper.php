@@ -32,6 +32,9 @@ class Wrapper
 
         $query_args = array_merge($default_args, $args);
 
+        // var_dump($query_args);
+        // exit;
+
         $CustomOrdersManager = new CustomOrdersManager();
         $query_args = $CustomOrdersManager->applyCustomOrder($query_args);
 

@@ -51,6 +51,28 @@ class CustomOrdersManager
         $table_posts = $wpdb->prefix . 'posts';
         $table_users = $wpdb->prefix . 'users';
 
+        $include_only = null;
+        if(isset($query_args['include']) && $query_args['include']) {
+            if(is_array($query_args['include'])) {
+                $include_only = implode(',', $query_args['include']);
+            } else {
+                $include_only = $query_args['include'];
+            }
+            
+            unset($query_args['include']);
+        }
+
+        $exclude = null;
+        if(isset($query_args['exclude']) && $query_args['exclude']) {
+            if(is_array($query_args['exclude'])) {
+                $exclude = implode(',', $query_args['exclude']);
+            } else {
+                $exclude = $query_args['exclude'];
+            }
+
+            unset($query_args['exclude']);
+        }
+
         $order_by_count = 'DESC';
         $order_by_id = 'ASC';
         if (isset($query_args['order']) && strtoupper($query_args['order']) === 'ASC') 
@@ -74,7 +96,17 @@ class CustomOrdersManager
 
             ON comments_approved.user_id = users.ID
 
-            ORDER BY comments_count ' . $order_by_count . ', users.ID ' . $order_by_id;
+            WHERE 1 = 1 ';
+
+        if(!is_null($include_only)) {
+            $query .= ' AND users.ID IN (' . $include_only . ')';
+        }
+        if(!is_null($exclude)) {
+            $query .= ' AND users.ID NOT IN (' . $exclude . ')';
+        }
+
+        $query .= ' ORDER BY comments_count ' . $order_by_count . ', users.ID ' . $order_by_id;
+
 
         $user_ids_by_comments_count = $wpdb->get_col($query, 0);
 

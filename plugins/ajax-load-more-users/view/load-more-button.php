@@ -6,6 +6,10 @@
 
         if($include) :
             echo ' data-include="' . filter_var($include, FILTER_SANITIZE_STRING) . '"';
+        endif;
+
+        if($exclude) :
+            echo ' data-exclude="' . filter_var($exclude, FILTER_SANITIZE_STRING) . '"';
         endif; 
 
         if($order) :
