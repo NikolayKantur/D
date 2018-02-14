@@ -95,7 +95,7 @@ class Main {
             'almu-script', 
             $url . 'almu-main.js',
             ['jquery'],
-            '2018-02-12',
+            '2018-02-14',
             true
         );
 

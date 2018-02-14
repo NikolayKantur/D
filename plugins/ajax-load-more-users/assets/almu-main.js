@@ -8,19 +8,25 @@
         var $window = $(window);
 
         var $load_more_button = $document.find('#almu-load-more');
+        
+        if(!$load_more_button.length) {
+            return;
+        }
+
         var $load_more_button_wrap = $load_more_button.parent();
 
         var $content_container = $document.find('.all-users');
 
         var roles = $load_more_button.attr('data-roles') || null;
         var include = $load_more_button.attr('data-include') || null;
+        var exclude = $load_more_button.attr('data-exclude') || null;
         var orderby = $load_more_button.attr('data-orderby') || null;
         var order = $load_more_button.attr('data-order') || null;
         var per_page = $load_more_button.attr('data-per-page') || null;
 
         // Main action, in this handler we load more users by ajax
         $window.on('scroll', function() {
-            if(!$content_container) {
+            if(!$content_container.length || !$load_more_button.length) {
                 return;
             }
 
@@ -44,6 +50,7 @@
                     'current_page': current_page,
                     'roles': roles,
                     'include': include,
+                    'exclude': exclude,
                     'orderby': orderby,
                     'order': order,
                     'per_page': per_page,
