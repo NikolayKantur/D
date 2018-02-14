@@ -25,7 +25,7 @@ class Did_Posts
     {
         global $wpdb;
     
-        $sql = "SELECT `ID`, `post_author` FROM `wp_posts` WHERE `post_type` = 'post' GROUP BY `post_author`";
+        $sql = "SELECT `ID`, `post_author` FROM `wp_posts` WHERE `post_type` = 'post' AND `post_status` = 'publish' GROUP BY `post_author`";
         $result = $wpdb->get_results($sql, ARRAY_A);
         if ($result) {
             return $result;
