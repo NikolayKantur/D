@@ -61,6 +61,11 @@
     margin-left: 0;
 }
 
+.top-bar .menu-header.active {
+    float: none;
+    width: auto;
+}
+
 
 /**
  * 16.1 Mobile Large 620px
