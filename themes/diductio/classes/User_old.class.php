@@ -1,6 +1,6 @@
 <?php
 
-    class User extends Diductio
+    class User_old extends Diductio
     {
         /**
          * @var array $settings ;

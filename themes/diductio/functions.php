@@ -430,7 +430,7 @@ spl_autoload_register(function ($class_name) {
         $class_name = substr($class_name, 1);
     }
     $file_name = strtolower($class_name) . '.class.php';
-    $file = get_template_directory() . DIRECTORY_SEPARATOR . $file_name;
+    $file = get_template_directory() . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . $file_name;
     if (file_exists($file)) {
         require_once($file);
     }
@@ -453,8 +453,8 @@ unset($stat_count);
 $diductio = Diductio::gi();
 $diductio->settings = $settings;
 $dPost = new Post();
-$dUser = new User();
-$st = new Statistic;
+$dUser = new User_old();
+$st = new Statistic_old;
 
 Diductio::gi()->post = $dPost;
 Diductio::gi()->user = $dUser;
@@ -462,7 +462,7 @@ Diductio::gi()->statistic = $st;
 
 
 if (is_admin()) {
-    $file_name = 'admin.class.php';
+    $file_name = 'classes/Admin.class.php';
     $admin_file = get_template_directory() . DIRECTORY_SEPARATOR . $file_name;
     if (file_exists($admin_file)) {
         require_once($admin_file);
@@ -1522,7 +1522,7 @@ $GLOBALS['comment'] = $comment; ?>
     
     add_action('wp_before_admin_bar_render', 'my_tweaked_admin_bar');
     
-    add_filter('clean_url', 'js_front_end_defer', 11, 1);
+    // add_filter('clean_url', 'js_front_end_defer', 11, 1);
     function js_front_end_defer($url)
     {
         if (false === strpos($url, '.js')) {

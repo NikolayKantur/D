@@ -3,7 +3,7 @@
     /**
      * Class Statistic. Всё что касается верхнего статистического блока
      */
-    class Statistic extends Diductio
+    class Statistic_old extends Diductio
     {
 
         /**
