@@ -7,7 +7,12 @@
  * @since Twenty Fifteen 1.0
  */
 
-global $user, $st, $dUser, $dPost;
+global $st, $dUser, $dPost;
+
+if(!isset($user)) {
+    global $user;
+}
+
 $Did_Categories = new Did_Categories();
 $user_id = $user->ID;
 $user_statistic = $st->get_user_info($user_id);

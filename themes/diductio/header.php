@@ -25,6 +25,7 @@
 <div class="top-bar">
 	<header id="masthead" class="" role="banner">
 		<div class="col-md-3 site-branding">
+			<div class="logo-and-title">
 			<?php
 				twentyfifteen_the_custom_logo();
 
@@ -35,11 +36,23 @@
 					<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 					<div class="undertitle">Создан для развития</div>
 				<?php endif;?>
-			<button class="secondary-toggle"><?php _e( 'Menu and widgets', 'diductio' ); ?></button>
+			</div>
+
+			<div class="secondary-button-holder">
+				<button class="secondary-toggle"><?php _e( 'Menu and widgets', 'diductio' ); ?></button>
+			</div>
+
+			<div class="header-search">
+				<?php dynamic_sidebar('sidebar-header'); ?>
+			</div>
 		</div><!-- .site-branding -->
-		<div class="col-md-9">
+		<div class="col-md-9 header-inner-wrapper">
 			<div class="mobileNav">Разделы</div>
-			<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'main' ) ); ?>
+			<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'main', 'nav_walker' ) ); ?>
+			
+			<div class="header-search">
+				<?php dynamic_sidebar('sidebar-header'); ?>
+			</div>
 		</div>
 		</header><!-- .site-header -->
 

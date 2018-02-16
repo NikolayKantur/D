@@ -849,7 +849,7 @@ a:focus {
     overflow: hidden;
     padding: 0;
     position: absolute;
-    top: 50%;
+    top: 30px;
     right: 0;
     text-align: center;
     -webkit-transform: translateY(-50%);
@@ -1246,6 +1246,8 @@ img.aligncenter {
     min-height: 2em;
     padding-right: 60px;
     position: relative;
+
+    overflow: hidden;
 }
 
 .site-title {
@@ -1253,13 +1255,19 @@ img.aligncenter {
     font-size: 22px;
     font-size: 2.2rem;
     font-weight: 700;
-    line-height: 1.3636;
+    line-height: 1;
     margin-bottom: 0;
+
+    display: inline-block;
 }
 
 .custom-logo {
-    max-height: 84px;
+    float: left;
+    margin-right: 10px;
     width: auto;
+
+    max-height: 50px;
+        height: 50px;
 }
 
 .wp-custom-logo .site-title {
@@ -1275,6 +1283,8 @@ img.aligncenter {
     line-height: 1.5;
     margin: 0.5em 0 0;
     opacity: 0.7;
+
+    order: -1;
 }
 
 /**
@@ -2617,6 +2627,15 @@ p > video {
     margin-bottom: 0;
 }
 
+.no-results .page-content {
+    margin-left: 4.3333%;
+}
+
+.no-results .page-content .search-form label,
+.no-results .page-content .search-form .search-field {
+    width: 100%;
+}
+
 /**
  * 16.0 Media Queries
  */
@@ -2633,6 +2652,10 @@ p > video {
 
 @viewport {
     /*width: device-width;*/
+}
+
+.site-branding {
+    text-align: center;
 }
 
 /**
@@ -2667,7 +2690,7 @@ p > video {
     .site-title {
         font-size: 22px;
         font-size: 2.2rem;
-        line-height: 1.0909;
+        line-height: 1.5;
     }
 
     .site-description {
@@ -2765,6 +2788,11 @@ p > video {
 
     .page-content {
         padding: 9.0909%;
+    }
+
+    .custom-logo {
+        max-height: 60px;
+        height: 60px;
     }
 
     .site-footer {
@@ -3034,15 +3062,11 @@ p > video {
     .site-title {
         font-size: 29px;
         font-size: 2.9rem;
-        line-height: 1.2069;
+        line-height: 1;
     }
 
-    .custom-logo {
-        max-height: 105px;
-    }
-
-    .wp-custom-logo .site-title {
-        margin-top: 0.482758621em;
+    .site-branding .site-title {
+        margin-top: 0.8em;
     }
 
     .site-description {
@@ -3663,11 +3687,7 @@ p > video {
     .site-title {
         font-size: 32px;
         font-size: 3.2rem;
-        line-height: 1.25;
-    }
-
-    .custom-logo {
-        max-height: 104px;
+        line-height: 0.8;
     }
 
     .wp-custom-logo .site-title {
@@ -4306,10 +4326,6 @@ p > video {
         font-size: 22px;
         font-size: 2.2rem;
         line-height: 1.3636;
-    }
-
-    .custom-logo {
-        max-height: none;
     }
 
     .wp-custom-logo .site-title {
@@ -5472,9 +5488,13 @@ p > video {
     .site-title {
         font-size: 27px;
         font-size: 2.7rem;
-        line-height: 1.1852;
+        line-height: 1.1667;
     }
 
+    .custom-logo {
+        max-height: 60px;
+        height: 60px;
+    }
     .wp-custom-logo .site-title {
         margin-top: 0.592592593em;
     }
@@ -6831,7 +6851,7 @@ a.lazy-load-youtube {
     }
 
     .page-header {
-        margin-left: 0;
+        /*margin-left: 0;*/
     }
 
     .entry-footer {
@@ -7183,6 +7203,12 @@ iframe.wp-embedded-content {
 	background-size:cover;
 	background-position:center;
 	background-repeat:no-repeat;
+}
+
+.article_header-img .label-post-format {
+    position: relative;
+    top: 7px;
+    left: 7px;
 }
 
 .article_header-infoWrp{

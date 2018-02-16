@@ -1,4 +1,8 @@
 <?php
+if(!isset($st)) {
+	global $st;
+}
+
 $post_statistic = $st->get_course_info($post->ID);
 $post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
 $post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
@@ -12,13 +16,27 @@ if ($done_users) {
     $done_args['include'] = $done_users;
     $done_users_array = new WP_User_Query($done_args);
 }
+
+$post_formats_map = array(
+	'aside' => ['Знание', 'success'],
+	'image' => ['Тест', 'success'],
+	'quote' => ['Проект', 'important'],
+	'video' => ['Видео', 'success'],
+	'gallery' => ['Задача', 'important'],
+	'chat' => ['Голосование', 'important'],
+);
+
+$current_post_format = get_post_format();
+$current_post_format_title = $post_formats_map[$current_post_format][0];
+$current_post_format_color = $post_formats_map[$current_post_format][1];
 ?>
 
 <div class="article_header">
-
 	<?php if ( has_post_thumbnail() ){?>
 	
-	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')"></div>
+	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')">
+		<span class="label label-<?php echo $current_post_format_color ?> label-post-format"><?php echo $current_post_format_title ?></span>
+	</div>
 	
 	<div class="article_header-infoWrp withImg format-<?php echo get_post_format();?>">
 	
