@@ -27,7 +27,7 @@ get_header(); ?>
 		foreach($progress as $tag_info)
 		{
 			$tag = get_tag($tag_info->term_id);
-			get_template_part( 'content', 'istochniki' );
+			get_template_part( 'templates/content/content', 'sources' );
 		}
 		?>
 		<?php

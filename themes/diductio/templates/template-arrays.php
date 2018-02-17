@@ -35,7 +35,7 @@ get_header(); ?>
 
 			if($post->ID) {
 		    	setup_postdata($post);
-				get_template_part( 'content', 'array' );
+				get_template_part( 'templates/content/content', 'array' );
 			}
 		}
 

@@ -8,7 +8,7 @@
      
      if( is_user_logged_in() ){
          
-        include 'page-progress.php';
+        include 'templates/template-progress.php';
         
      }else{
          

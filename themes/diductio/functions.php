@@ -1337,13 +1337,13 @@ $GLOBALS['comment'] = $comment; ?>
         // используем условный тег is_page()
         
         if (is_page('array-recently') || is_page('array-active')) {
-            if ($new_template = locate_template(array('page-arrays.php'))) {
+            if ($new_template = locate_template(array('templates/template-arrays.php'))) {
                 return $new_template;
             }
         } elseif (is_page('source')) {
             // если это страница со слагом istochniki(страница источников), используем файл шаблона page-istochiki
             // используем условный тег is_page()
-            if ($new_template = locate_template(array('page-istochniki.php'))) {
+            if ($new_template = locate_template(array('templates/template-sources.php'))) {
                 return $new_template;
             }
         } else {

@@ -46,7 +46,7 @@
         </header>
                 <?php
                     // Include the page content template.
-                    get_template_part('content', 'user-comments');
+                    get_template_part('templates/content/content', 'user-comments');
                 ?>
 
         <?php

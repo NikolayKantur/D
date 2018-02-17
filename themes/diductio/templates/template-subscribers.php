@@ -58,7 +58,7 @@ get_header(); ?>
                     // User Loop
                     if ( ! empty( $user_query->results ) ) {
                         foreach ( $user_query->results as $user ) {
-                            get_template_part( 'content', 'peoples' );
+                            get_template_part( 'templates/content/content', 'peoples' );
                         }
                     } else {
                         echo 'No users found.';
