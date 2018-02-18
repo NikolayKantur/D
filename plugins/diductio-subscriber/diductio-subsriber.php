@@ -14,6 +14,7 @@ add_action('wp_enqueue_scripts', 'load_scripts', 99);
 add_filter('template_include', 'portfolio_page_template', 99);
 add_action('widgets_init', 'WidgetInit');
 add_action('single-after-stat-row', 'suggestUsers');
+add_action('wp_footer', 'suggestUsers_modal');
 add_action('init', 'subscriber_init');
 
 
@@ -597,6 +598,15 @@ function getMyPostCount()
 }
 
 function suggestUsers()
+{
+	global $st, $post, $current_user;
+	if (is_user_logged_in()) {
+		$suggesting_users = getSuggestingUsers(get_current_user_id(), $post->ID);
+        pluginView('people.suggest-friend-header', compact('suggesting_users', 'st', 'post', 'current_user'));
+	}
+}
+
+function suggestUsers_modal()
 {
 	global $st, $post, $current_user;
 	if (is_user_logged_in()) {

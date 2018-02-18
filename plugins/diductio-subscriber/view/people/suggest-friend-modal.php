@@ -1,12 +1,3 @@
-
-<div class="stat-col">
-    <div class="add-to-favor-wrapper">
-                <span class="wpfp-span">
-                    <a id="suggest-to-user" data-toggle="modal" data-target="#suggestUser">Добавить</a>
-                </span>
-    </div>
-</div>
-
 <!-- Modal -->
 <div class="modal fade bs-example-modal-lg" id="suggestUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
