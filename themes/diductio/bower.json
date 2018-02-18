@@ -1,0 +1,17 @@
+{
+  "name": "diductio",
+  "description": "",
+  "authors": [
+    "Danil T"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "main.css": {
+      "files": [
+        "styles/main.scss"
+      ],
+      "main": true
+    }
+  },
+  "config": {
+    "paths": {
+      "styles": "styles"
+    }
+  }
+}
