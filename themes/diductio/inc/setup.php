@@ -27,25 +27,15 @@ $settings['post_formats_slug'] = array(
 unset($stat_count);
 $diductio = Diductio::gi();
 $diductio->settings = $settings;
-$dPost = new Post();
-$dUser = new User_old();
+$dPost = new Did_Post();
+$dUser = new Did_User_Old();
 $st = (new Did_Statistic)->oldStatisticClass;
 
 Diductio::gi()->post = $dPost;
 Diductio::gi()->user = $dUser;
 Diductio::gi()->statistic = $st;
 
-if (is_admin()) {
-    $file_name = 'classes/Admin.class.php';
-    $admin_file = get_template_directory() . DIRECTORY_SEPARATOR . $file_name;
-    if (file_exists($admin_file)) {
-        require_once($admin_file);
-    }
-}
-
 add_action('embed_head', array($diductio, 'includeStyles'));
-
-
 
 function diductio_widgets_init()
 {
@@ -144,4 +134,3 @@ function diductio_setup()
     add_theme_support('customize-selective-refresh-widgets');
 }
 add_action('after_setup_theme', 'diductio_setup');
-

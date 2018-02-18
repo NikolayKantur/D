@@ -1,16 +1,5 @@
 <?php
 
-function diductio_add_custom_style() {
-    wp_enqueue_style(
-        'custom-style', 
-        get_template_directory_uri() . '/custom-style.css', 
-        null,
-        '2018-02-13'
-    );
-}
-add_action('wp_enqueue_scripts', 'diductio_add_custom_style', 9999);
-
-
 function diductio_fonts_url()
 {
     $fonts_url = '';
@@ -82,16 +71,16 @@ function diductio_scripts()
     wp_enqueue_style('genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.2');
     
     // Load our main stylesheet.
-    wp_enqueue_style('diductio-style', get_stylesheet_uri());
+    wp_enqueue_style('diductio-deprecated-style', get_stylesheet_uri());
     
     // Load the Internet Explorer specific stylesheet.
-    wp_enqueue_style('diductio-ie', get_template_directory_uri() . '/css/ie.css', array('diductio-style'),
+    wp_enqueue_style('diductio-ie', get_template_directory_uri() . '/css/ie.css', array('diductio-deprecated-style'),
         '20141010');
     wp_style_add_data('diductio-ie', 'conditional', 'lt IE 9');
     
     // Load the Internet Explorer 7 specific stylesheet.
     wp_enqueue_style('diductio-ie7', get_template_directory_uri() . '/css/ie7.css',
-        array('diductio-style'), '20141010');
+        array('diductio-deprecated-style'), '20141010');
     wp_style_add_data('diductio-ie7', 'conditional', 'lt IE 8');
     
     wp_enqueue_script('diductio-skip-link-focus-fix',
@@ -156,7 +145,7 @@ function diductio_post_nav_background()
         ';
     }
     
-    wp_add_inline_style('diductio-style', $css);
+    wp_add_inline_style('diductio-inline-style', $css);
 }
 
 add_action('wp_enqueue_scripts', 'diductio_post_nav_background');
@@ -185,3 +174,13 @@ function diductio_my_scripts_method()
     // (14) Подключение bootstrap end
     
 }
+
+function diductio_add_styles() {
+    wp_enqueue_style(
+        'diductio-style', 
+        get_template_directory_uri() . '/dist/styles/main.css', 
+        array('diductio-deprecated-style'),
+        '2018-02-18'
+    );
+}
+add_action('wp_enqueue_scripts', 'diductio_add_styles', 100);

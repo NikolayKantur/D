@@ -1,0 +1,33 @@
+<?php
+/*
+Plugin Name: Diductio
+Description: Добавляет функционал проекта Diductio на сайт
+Text Domain: diductio
+Author: Danil T.
+Version: 1.0.0
+License: GPL 3.0
+*/
+
+spl_autoload_register(
+    function ($class) {
+        // Don't interfere with other autoloaders
+        if (0 !== strpos($class, 'Did_') && $class !== 'Diductio') {
+            return;
+        }
+
+        $path = __DIR__ . '/' . 'classes' . '/' . str_replace('Did_', '', $class) . '.class' . '.php';
+        if (!file_exists($path)) {
+            return;
+        }
+        
+        require $path;
+    }
+);
+
+function diductio_run() {
+    if (is_admin()) {
+        $Admin = new Did_Admin();
+    }
+}
+
+add_action('plugins_loaded', 'diductio_run');

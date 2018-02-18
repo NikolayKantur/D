@@ -22,8 +22,15 @@ require get_template_directory() . '/inc/template-tags.php';
 require get_template_directory() . '/inc/customizer.php';
 
 
-// Include customs
+// Include autoload
 require get_template_directory() . '/inc/autoload.php';
+
+// Nothing do if plugin isn't active
+if(!class_exists('Diductio')) {
+    return;
+}
+
+// Include other
 require get_template_directory() . '/inc/setup.php';
 require get_template_directory() . '/inc/assets.php';
 require get_template_directory() . '/inc/utils.php';
