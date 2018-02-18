@@ -1,4 +1,6 @@
-
+<?php
+$Did_Categories = new Did_Categories();
+?>
 <div class="stat-col">
     <div class="add-to-favor-wrapper">
                 <span class="wpfp-span">
@@ -19,45 +21,29 @@
                 <div class="row">
                     <?php if($suggesting_users): ?>
                         <?php foreach ($suggesting_users as $user):
-                            $Did_Categories = new Did_Categories();
-        
                             $user_id = $user->ID;
-        
-                            $author_info = get_userdata($user_id);
-                            $user_statistic = $st->get_user_info($user_id);
-                            $category_statistic = $Did_Categories
-                                ->fetchCategoriesByUser($user_id)
-                                ->orderBy('value', 'desc')
-                                ->max();
-        
-                            $tag_statistic = $Did_Categories
-                                ->fetchTagsByUser($user_id)
-                                ->orderBy('value', 'desc')
-                                ->max();
-        
-                            $user_statistic['author'] = Did_User::getAllMyPosts($user_id);
+
+                            $category_statistic = $Did_Categories->getCategoryStatistic($user_id);
+                            $tag_statistic = $Did_Categories->getTagStatistic($user_id);
                             
+                            $user_statistic = $st->get_user_info($user_id);
+                            $user_statistic['author'] = Did_User::getAllMyPosts($user_id);
+
+                            $viewParams = Did_Views::getParamsForView('people.single-row', array(
+                                'user_id' => $user_id,
+                                'author_info' => get_userdata($user_id),
+                                'category_statistic' => $category_statistic,
+                                'user_statistic' => $user_statistic,
+                                'tag_statistic' => $tag_statistic,
+                            ));
+
                             ?>
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">
                                     <div class="col-md-1 user-selecting">
                                         <input <?php if($user->is_selected): ?> checked="checked" disabled="disabled" <?php endif;?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
                                     </div>
-                                    <?php view(
-                                        'people.single-row',
-                                        compact(
-                                            'user_statistic',
-                                            'category_statistic',
-                                            'author_info',
-                                            'tag_statistic',
-                                            'user_id',
-                                            'dPost',
-                                            'favorite_post_ids',
-                                            'will_busy_days',
-                                            'enable_link'
-                                        )
-                                    );
-                                    ?>
+                                    <?php diductio_view('people.single-row', $viewParams); ?>
                                 </label>
                             </div>
                         <?php endforeach; ?>

@@ -3,16 +3,13 @@
  * My progress view
  * Вьюшка отвечающая за отображение Блока "мой прогресс" с активными задачами в сайдбаре
  */
-?>
 
-<?php
-    $i = 0;
+$st = (new Did_Statistic)->oldStatisticClass;
 ?>
 
 <ul>
-   
-    <!-- My progress view  -->
-    <?php if(is_user_logged_in()): ?>
+<!-- My progress view  -->
+<?php if(is_user_logged_in()): ?>
     <li>
         <a href="/progress">
             Мой прогресс
@@ -25,34 +22,15 @@
         </a>
     </li> 
     
-    <?php foreach ($knowledges as $knowledge):            
-        $pass_info = $GLOBALS['dPost']->get_passing_info_by_post($user_ID, $knowledge->ID);
-        $added_by = Did_Statistic::addedBy($knowledge->ID, $user_ID);
-        
-        /*
-            Информация о результатах выполнения задач.
-        */        
-        // Выводим фактический прогресс
-        $actual_progress = $GLOBALS['st']->get_user_progress_by_post($knowledge->ID, $user_ID);        
-        // Считаем расчетный прогресс. (Примечание, обязательно в админ-панели должен быть прописан параметр work_time)
-        $work_time = get_post_meta($knowledge->ID, 'work_time', true); // Заданное время для выполнения задания.
-        $post_statistic = $st->get_course_info($knowledge->ID); // Информация о посте.
-        $current_user_id = get_current_user_id(); // ID пользователя
-        $started = $post_statistic['users_started'][$current_user_id]; // Начало выполнения задания.
-        $now = date_create(); // Сегодняшняя дата.
-        $start = date_create($started); // Создаем дату начала выполнения задания.
-        $diff = date_diff($now, $start); // Количество пройденных дней с начала выполнения задания.        
-        $diff_h_in_days = $diff->h > 0 ? $diff->h / 24 : 0; 
-        $estimated_progress = round( ( ($diff->days + $diff_h_in_days) / $work_time ) * 100, 2);
-        if ($estimated_progress >= 100) {
-            $estimated_progress = 100; 
-        }
-    ?>
+<?php $i = 0; foreach ($knowledges as $knowledge) :            
+    $added_by = Did_Statistic::addedBy($knowledge->ID, $user_ID);
+
+    // Выводим фактический прогресс
+    $actual_progress = $st->get_user_progress_by_post($knowledge->ID, $user_ID);
+    $estimated_progress = Did_User::getEstimatedProgressFor($knowledge); ?>
     
     <li class="widget-my-project-list">
-        
         <div>
-            
             <div class="stat-col margin-right-none">
                 <span class="<?php if($estimated_progress > $actual_progress){echo("label label-danger label-short");}else{echo("label label-success label-soft label-short");} ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Фактический прогресс">
                     <?= $actual_progress; ?>
@@ -89,7 +67,7 @@
         
     </li>
     
-    <?php endforeach; ?>
+<?php endforeach; ?>
     
     <!-- Navigation  -->
     <li class='row'>

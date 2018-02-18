@@ -23,7 +23,7 @@ if ( post_password_required() ) {
 <div id="comments" class="comments-area modified">
 
 	<?php if ( have_comments() ) : ?>
-		<?php twentyfifteen_comment_nav(); ?>
+		<?php diductio_comment_nav(); ?>
 
 		<ol class="diductio-comment-list">
 			<?php
@@ -31,7 +31,7 @@ if ( post_password_required() ) {
 			?>
 		</ol><!-- .comment-list -->
 
-		<?php twentyfifteen_comment_nav(); ?>
+		<?php diductio_comment_nav(); ?>
 
 	<?php endif; // have_comments() ?>
 

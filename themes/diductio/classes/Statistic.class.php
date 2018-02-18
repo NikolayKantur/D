@@ -14,9 +14,10 @@ class Did_Statistic
      */
     public function __construct()
     {
+
         $diductio = Diductio::gi();
         $this->stat_table = $diductio->settings['stat_table'];
-        $this->oldStatisticClass = $GLOBALS['st'];
+        $this->oldStatisticClass = new Statistic_old;
     }
     
     /**

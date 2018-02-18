@@ -20,7 +20,8 @@
             <?php if(!is_single()): ?>
                 <div class="footer-statistic">
                     <?php
-                    $post_statistic = $GLOBALS['st']->get_course_info($comment->comment_post_ID);
+                    $st = (new Did_Statistic)->oldStatisticClass;
+                    $post_statistic = $st->get_course_info($comment->comment_post_ID);
                     $post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
                     $post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
                     ?>
@@ -62,7 +63,7 @@
             <?php endif; ?>
             <?php
                 $post = get_post($comment->comment_post_ID);
-                twentyfifteen_entry_meta();
+                diductio_entry_meta();
             ?>
             <?php edit_post_link( __( 'Edit', 'diductio' ), '<span class="edit-link">', '</span>' ); ?>
         </footer><!-- .entry-footer -->

@@ -14,6 +14,34 @@ class Did_Posts
     {
         $this->staticClass = new Did_Statistic();
     }
+
+    public static function getCategoriesByPostsWithCurrentTag() {
+        global $tag;
+
+        // Get posta by Tag
+        $tag_id = $tag->term_id;
+        $args = array( 
+            'tag__in' => $tag_id,
+            'posts_per_page' => -1
+        );
+        $tag_posts = get_posts($args);
+
+        $tag_categories = array();
+
+        // Получаем категории по всем постам с этим тэгом
+        foreach ($tag_posts as $tag_key => $tag_value) {
+            $category_id = wp_get_post_categories($tag_value->ID);
+            $category_info = get_category($category_id[0]);
+            $category_link  = get_category_link($category_id[0]);
+
+            $tmp_data['cat_id']   =  $category_info -> term_id;
+            $tmp_data['cat_name'] =  $category_info -> name;
+            $tmp_data['cat_link'] =  $category_link;
+            $tag_categories[$category_info -> term_id] = $tmp_data;
+        }
+
+        return $tag_categories;
+    }
     
     /**
      * Getting all authors
@@ -161,6 +189,17 @@ class Did_Posts
         $result = $wpdb->get_results($sql, ARRAY_A);
         
         return !empty($result);
+    }
+
+    public static function getPostsFormatMap() {
+        return array(
+            'aside' => ['Знание', 'success'],
+            'image' => ['Тест', 'success'],
+            'quote' => ['Проект', 'important'],
+            'video' => ['Видео', 'success'],
+            'gallery' => ['Задача', 'important'],
+            'chat' => ['Голосование', 'important'],
+        );
     }
     
 }

@@ -21,7 +21,7 @@ add_action('init', 'subscriber_init');
 function load_scripts(){
     wp_enqueue_style('diductio_subscriber_style', plugin_dir_url(__FILE__) . 'css/style.css');
     wp_enqueue_script('diductio_script', plugin_dir_url(__FILE__) . '/js/subscriber-script.js', array('jquery'), 1.1, true);
-    wp_localize_script('twentyfifteen-script', 'didAjax', array('url' => admin_url('admin-ajax.php')));
+    wp_localize_script('diductio-script', 'didAjax', array('url' => admin_url('admin-ajax.php')));
     wp_register_script('suggest-user', plugin_dir_url(__FILE__) . "js/suggest_user.js");
     wp_enqueue_script('suggest-user');
     wp_enqueue_style('suggest-user-css', plugin_dir_url(__FILE__) . 'css/suggest_user.css');
@@ -333,7 +333,7 @@ class Diductio_subsriber extends WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		global $comments, $comment, $wpdb;
+		global $comments, $wpdb;
 
 		$cache = array();
 		if ( ! $this->is_preview() ) {
@@ -499,7 +499,7 @@ class Diductio_subsriber extends WP_Widget {
 						$output .= "<div class='inline comment-content'>";
 						$output .= "<div class='comment-body'>";
 						if($s['content'] != null ){
-						  $output .= excerp_comment(get_comment($s['id'])->comment_content, 67);
+						  $output .= diductio_excerp_comment(get_comment($s['id'])->comment_content, 67);
 						  $output .= "<a class='link-style-1' href='"
 							. esc_url( get_comment_link( $s['id'] ) ) ."'>&nbsp;#</a><br>";
 						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 

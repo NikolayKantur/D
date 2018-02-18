@@ -34,34 +34,6 @@
 			) );
 		?>
 
-<!-- (17) Добавление чекбокса на страницу с отсутствующим акордеоном -->
-    <?php if ( is_single()): ?>
-		<?php if(!$GLOBALS['accordion_exsit']):
-			$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-			$user_id = get_current_user_id();
-			$sql  = "SELECT `checked_lessons` FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
-			$sql .= "AND `post_id` = '{$post->ID}'";
-			$progress = $wpdb->get_row($sql);
-		    $isMine = Did_Posts::isPostInMyCabinet($user_id, $post->ID);
-		    
-			if($progress->checked_lessons) {
-				$checkbox_attr = "checked='checked' disabled='disabled'";
-			}
-		?>
-		 <?php if(is_user_logged_in() && $isMine): ?>
-			 <div class="col-md-1 col-xs-2" style="height: 0;">
-					<div style="height: 22px;" class="checkbox inline">
-						<input id="checkbox-<?=$post->ID;?>" type="checkbox" class="accordion-checkbox" data-accordion-count="1" data-post-id="<?=$post->ID;?>" <?=$checkbox_attr?> >
-					    <label for="checkbox-<?=$post->ID;?>"></label>
-					</div>
-			 </div>
-			 <div class="col-md-3 col-xs-5 checkbox-label">
-			 		<label for="checkbox-<?=$post->ID;?>">Готово!</label>
-			 </div>
-		<?php endif;?>
-		<?php endif;?>
-	<?php endif;?>
-<!-- (17) Добавление чекбокса на страницу с отсутствующим акордеоном end-->
 	</div><!-- .entry-content -->
 	
 	

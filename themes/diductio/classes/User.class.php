@@ -2,6 +2,8 @@
 
 class Did_User
 {
+    const COMMENTS_PER_PAGE = 60;
+    const USERS_PER_PAGE = 10;
     /**
      * @var Did_Statistic
      */
@@ -108,5 +110,106 @@ class Did_User
         }
         
         return $result;
+    }
+
+    public static function getUserComments($user_id) {
+        $page      = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        $limit     = self::COMMENTS_PER_PAGE;
+        $offset    = ($page * $limit) - $limit;
+
+        return get_comments(array(
+            'offset'     => $offset,
+            'author__in' => $user_id,
+            'number'     => $limit,
+        ));
+    }
+
+    public static function getTotalProgress() {
+        $st = (new Did_Statistic)->oldStatisticClass;
+        
+        $current_user_id = get_current_user_id();
+        $current_user_progress = false;
+        $posts_users = $st->get_users_by_post($post->ID);
+        // Find total progress
+        $total_progress = 0;
+        $num_users = 0;
+        foreach ($posts_users as $user) {
+            // Get current user progress
+            if ($current_user_id && isset($user['user_id']) && $user['user_id'] === $current_user_id) {
+                $current_user_progress = $user['progress'];
+            }
+
+            if (isset($user['progress']) && $user['progress'] > 0) {
+                $total_progress += $user['progress'];
+                ++$num_users;
+            }
+        }
+
+        if ($total_progress > 0 && $num_users > 1) {
+            $total_progress = round($total_progress / $num_users, 2);
+        }
+
+        return $total_progress;
+    }
+
+    public static function getEstimatedProgressForKnowledge($knowledge) {
+        $st = (new Did_Statistic)->oldStatisticClass;
+
+        // Считаем расчетный прогресс. (Примечание, обязательно в админ-панели должен быть прописан параметр work_time)
+        $work_time = get_post_meta($knowledge->ID, 'work_time', true); // Заданное время для выполнения задания.
+        $post_statistic = $st->get_course_info($knowledge->ID); // Информация о посте.
+        $current_user_id = get_current_user_id(); // ID пользователя
+        $started = $post_statistic['users_started'][$current_user_id]; // Начало выполнения задания.
+    
+        $now = date_create(); // Сегодняшняя дата.
+        $start = date_create($started); // Создаем дату начала выполнения задания.
+        $diff = date_diff($now, $start); // Количество пройденных дней с начала выполнения задания.        
+    
+        $diff_h_in_days = $diff->h > 0 ? $diff->h / 24 : 0; 
+
+        $estimated_progress = round( ( ($diff->days + $diff_h_in_days) / $work_time ) * 100, 2);
+
+        if ($estimated_progress >= 100) {
+            $estimated_progress = 100; 
+        }
+
+        return $estimated_progress;
+    }
+
+    public static function getEstimatedProgressForPost($post_id) {
+        $st = (new Did_Statistic)->oldStatisticClass;
+        $post_statistic = $st->get_course_info($post_id);
+
+        $work_time = (int)get_post_meta($post_id, 'work_time', true);
+
+        $current_user_id = get_current_user_id();
+
+        $started = $post_statistic['users_started'][$current_user_id];
+        $now = date_create();
+        $start = date_create($started);
+
+        // date_add() modifies $end object
+        $end = date_create($started);
+        date_add($end, date_interval_create_from_date_string($work_time . ' days'));
+        $diff = date_diff($now, $start);
+        $countdown = date_diff($end, $now);
+        
+        $diff_h_in_days = $diff->h > 0 ? $diff->h / 24 : 0;
+        $estimated_progress = 0;
+        
+        if ($work_time) {
+            $estimated_progress = round(
+                (
+                    ($diff->days + $diff_h_in_days) / $work_time
+                ) * 100,
+                2
+            );
+        }
+
+        if ($estimated_progress >= 100) {
+            $estimated_progress = 100; 
+        }
+
+        return $estimated_progress;
     }
 }

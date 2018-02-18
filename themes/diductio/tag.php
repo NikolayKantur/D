@@ -15,17 +15,15 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-get_header();
-$post_count  = $wp_query->get_queried_object()->count;
+global $wp_query;
+$post_count  = $wp_query->post_count;
+
 if (is_tag()) {
 	$tag = get_queried_object();
 	$tag_id = $tag->term_id;
-	global $wp_query;
-	$args = array( 
-        'tag__in' => $tag_id,
-        'posts_per_page' => -1);
-	$tag_posts = get_posts($args);
 }
+
+get_header();
 ?>
 
 	<section id="primary" class="content-area">
@@ -56,24 +54,16 @@ if (is_tag()) {
 				<footer class="entry-footer">
 					<span class="screen-reader-text">Рубрики </span>
 						<?php
-						 if($tag_posts)	{
-		    				$tag_categories = array();
-		    				foreach ($tag_posts as $tag_key => $tag_value) {
-		    					$category_id = wp_get_post_categories($tag_value->ID);
-		    					$category_info = get_category($category_id[0]);
-			   					$category_link  = get_category_link($category_id[0]);
-								$tmp_data['cat_id']   =  $category_info -> term_id;
-								$tmp_data['cat_name'] =	 $category_info -> name;
-								$tmp_data['cat_link'] =	 $category_link;
-								$tag_categories[$category_info -> term_id] = $tmp_data;
-		    				}
+						 if(isset($tag_id) && $tag_id)	{
+		    				$tag_categories = Post::getTagCategoriesBy($tag_id);
 
-		    				foreach ($tag_categories as $key => $value) {
-		    					$html  = '<span class="cat-links 2">';
-		    					$html .='<a href="'. $value['cat_link'] .'">'. $value['cat_name'] . '</a>';
-		    					$html .='</span>';
-		    					echo $html;
-		    				}	
+		    				foreach ($tag_categories as $key => $value) { ?>
+		    					<span class="cat-links 2">
+		    						<a href="<?php echo $value['cat_link'] ?>">
+		    							<?php echo $value['cat_name'] ?>
+		    						</a>
+		    					</span>
+		    				<?php }	
 						 }
 						 ?>
 				</footer>

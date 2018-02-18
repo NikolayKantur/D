@@ -2,6 +2,8 @@
 /**
  * Вьюшка личного и публичного кабинета пользователя
  */
+
+$st = (new Did_Statistic)->oldStatisticClass;
 ?>
 <!-- Cabinet -->
 <div class="personal-area row">
@@ -17,7 +19,7 @@
             <?php endif; ?>
             <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
             <div class="user-categories">
-                <?php view('user-category-static',
+                <?php diductio_view('user-category-static',
                     compact('user_statistic', 'category_statistic', 'author_info', 'tag_statistic')); ?>
             </div>
         </div>
@@ -31,7 +33,7 @@
                 <?php
                 $passing_date = $dPost->get_passing_info_by_post($user_id, get_the_ID());
                 $added_by = Did_Statistic::addedBy(get_the_ID(), $user_id);
-                $percent = $GLOBALS['st']->get_user_progress_by_post(get_the_ID(), $user_id);
+                $percent = $st->get_user_progress_by_post(get_the_ID(), $user_id);
                 
                 if ($percent == 100) {
                     $passed_rating = Did_Posts::getPassedPostRating(get_the_ID(), $user_id);

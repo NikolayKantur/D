@@ -6,13 +6,13 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-	global $active_flag, $st;
+	global $st;
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php
 		// Post thumbnail.
-		twentyfifteen_post_thumbnail();
+		diductio_post_thumbnail();
 
 	?>
 
@@ -79,7 +79,7 @@
 				</div>
 			<?php endif; ?>
 		</div>
-		<?php twentyfifteen_entry_meta(); ?>
+		<?php diductio_entry_meta(); ?>
 		<?php edit_post_link( __( 'Edit', 'diductio' ), '<span class="edit-link">', '</span>' ); ?>
 	</footer><!-- .entry-footer -->
 

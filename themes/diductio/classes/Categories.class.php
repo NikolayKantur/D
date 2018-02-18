@@ -13,6 +13,19 @@ class Did_Categories
     private $sql;
     
     private $flag;
+
+    public function getCategoryStatisticBy($user_id) {
+        return $this->fetchCategoriesByUser($user_id)
+        ->orderBy('value', 'desc')
+        ->max();
+    }
+
+    public function getTagStatisticBy($user_id) {
+        return $this
+        ->fetchTagsByUser($user_id)
+        ->orderBy('value', 'desc')
+        ->max();
+    }
     
     function fetchCategoriesByUser($user_id)
     {

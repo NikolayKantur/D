@@ -1,39 +1,18 @@
 <?php
-    /*
-     * Template Name: Активность (комментарии)
-     * Данный шаблон выводит страницу активности пользователя (его комментарии)
-    */
-    get_header();
-    if (get_query_var('username')) {
-        $user_obj = get_user_by('slug', get_query_var('username'));
-        $title    = "Активность " . $user_obj->display_name;
-        $user_id  = $user_obj->ID;
-    } else {
-        $title   = "Моя активность";
-        $user_id = get_current_user_id();
-    }
-    $view_path = Diductio::gi()->settings['view_path'];
-    $id        = $user_id ?: get_current_user_id();
-    $page      = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    $per_page = 60; /* Hardcode */
-    $limit     = $per_page;
-    $offset    = ($page * $limit) - $limit;
+/*
+ * Template Name: Активность (комментарии)
+ * Данный шаблон выводит страницу активности пользователя (его комментарии)
+*/
+get_header();
 
+$user_id = get_current_user_id();
 
-    $args           = array(
-        'offset'     => $offset,
-        'author__in' => $id,
-        'number'     => $limit,
-    );
-    $total_comments = get_comments(array(
-        'orderby'    => 'post_date',
-        'order'      => 'DESC',
-        'author__in' => $id,
-        'status'     => 'approve',
-    ));
+if ($username = get_query_var('username', null)) {
+    $user_obj = get_user_by('slug', $username);
+    $user_id  = $user_obj->ID;
+}
 
-    $pages         = ceil(count($total_comments) / $per_page);
-    $user_comments = get_comments($args);
+$user_comments = Did_User::getUserComments($user_id);
 
 ?>
 
@@ -42,36 +21,27 @@
 
     <main id="main" class="site-main" role="main">
         <header class="page-header">
-            <h1 class="entry-title"><?=$title;?></h1>
+            <h1 class="entry-title">
+                <?php if($username) : ?>
+                    Активность <?php echo $user_obj->display_name; ?>
+                <?php else : ?>
+                    Моя активность
+                <?php endif; ?>
+            </h1>
         </header>
                 <?php
                     // Include the page content template.
                     get_template_part('templates/content/content', 'user-comments');
                 ?>
 
-        <?php
-            $args = array(
-                'format'    => 'page/%#%',
-                'total'     => $pages,
-                'current'   => $page,
-                'show_all'  => false,
-                'end_size'  => 1,
-                'mid_size'  => 2,
-                'prev_next' => true,
-                'prev_text' => __('Previous'),
-                'next_text' => __('Next'),
-                'type'      => 'plain',
-            );
-        ?>
         <?php if ($user_comments > $per_page): ?>
             <nav class="navigation pagination custom-page-wrapper" role="navigation">
                 <div class="nav-links custom-pagination">
-                    <?php echo paginate_links($args); ?>
+                    <?php echo Did_Pagination::getPaginationForUserComments(); ?>
                 </div>
             </nav>
         <?php endif; ?>
     </main>
 </div>
-
 
 <?php get_footer(); ?>

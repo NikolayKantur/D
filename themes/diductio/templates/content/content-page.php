@@ -12,7 +12,7 @@ $id = get_the_ID();
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php
 		// Post thumbnail.
-		twentyfifteen_post_thumbnail();
+		diductio_post_thumbnail();
 	?>
 
 	<header class="entry-header">

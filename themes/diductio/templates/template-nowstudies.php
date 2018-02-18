@@ -5,10 +5,7 @@
  * либо выводит свободных пользователей
 */
 
-global $st, $wp_roles;
-if(!isset($st)) {
-    global $st;
-}
+$st = (new Did_Statistic)->oldStatisticClass;
 
 $args = array(
     'include' => array(),
@@ -22,9 +19,6 @@ if (is_page('people-active')) {
     //Free peoples
     $args['exclude'] = array_keys($st->busy_peoples);
 }
-
-// var_dump(array_keys($args['exclude']));
-// exit;
 
 $UserQuery = Did_Users::getUsersQuery(array_merge(array(
     'number' => 10,
