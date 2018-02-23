@@ -25,6 +25,18 @@ class AjaxLoadMoreUsers
             'orderby' => null,
             'order' => null,
             'per_page' => null,
+
+            'mode' => 'users',
+
+            'category' => null,
+            'tag' => null,
+            'taxonomy' => null,
+            'taxonomy_terms' => null,
+            'post_status' => null,
+
+            'container' => null,
+            'search' => null,
+            'author' => null,
         );
 
         $template_attrs = shortcode_atts($default_attrs, $user_attrs);

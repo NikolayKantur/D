@@ -2,11 +2,11 @@
 
 namespace AjaxLoadMoreUsers\App\AjaxActions;
 
-use AjaxLoadMoreUsers\App\UserQuery;
+use AjaxLoadMoreUsers\App\PostQuery;
 
-class LoadMoreUsers 
+class LoadMorePosts
 {
-    private $allowed_args = ['include', 'exclude', 'roles', 'orderby', 'order'];
+    private $allowed_args = ['include', 'exclude', 'roles', 'orderby', 'order', 'post_status', 'taxonomy', 'taxonomy_terms', 'tag', 'category', 'search', 'author'];
 
     private $custom_order_modes = array('comments_count');
 
@@ -30,11 +30,11 @@ class LoadMoreUsers
         ];
 
         // Get current page and other query args
-        $UsersQueryWrapper = new UserQuery\Wrapper();
+        $PostsQueryWrapper = new PostQuery\Wrapper();
         
-        $users_per_page = $UsersQueryWrapper::USERS_PER_PAGE;
+        $posts_per_page = $PostsQueryWrapper::POSTS_PER_PAGE;
         if (isset($_POST['per_page'])) {
-            $users_per_page = (int)$_POST['per_page'];
+            $posts_per_page = (int)$_POST['per_page'];
         }
 
         $current_page = $_POST['current_page'];
@@ -42,39 +42,54 @@ class LoadMoreUsers
             $current_page = 2;
         }
         
-        $offset = ($current_page - 1) * $users_per_page;
+        $offset = ($current_page - 1) * $posts_per_page;
         
         // Build default and user arguments
         $default_args = array(
-            'number' => $users_per_page,
+            'number' => $posts_per_page,
             'offset' => $offset,
             'paged' => $current_page,
 
-            'orderby' => 'post_count',
+            'orderby' => 'post_date',
             'order' => 'DESC',
+
+            'include' => null,
+            'exclude' => null,
+            'per_page' => null,
+
+            'category' => null,
+            'tag' => null,
+            'taxonomy' => null,
+            'taxonomy_terms' => null,
+            'post_status' => null,
+            'search' => null,
+            'author' => null,
         );
-        $user_args = $this->fill_arguments_from($_POST);
+        $post_args = $this->fill_arguments_from($_POST);
 
         // Build query arguments array
-        $query_args = array_merge($default_args, $user_args);
+        $query_args = array_merge($default_args, $post_args);
 
         // Get Wp_User_Query via Wrapper
-        $UserQuery = $UsersQueryWrapper->getUsersQuery($query_args);
+        $PostQuery = $PostsQueryWrapper->getPostQuery($query_args);
 
         // Create layout and set it to response
         ob_start();
-        foreach ($UserQuery->results as $user) {
-            set_query_var('user', $user);
-            get_template_part('templates/content/content', 'peoples');
+        // echo '<pre>';
+        // var_dump($PostQuery);
+        foreach ($PostQuery->posts as $post) {
+            $PostQuery->the_post();
+            set_query_var('post', $post);
+            get_template_part('templates/partials/post', 'entry');
         }
         $response['data']['layout'] = ob_get_clean();
 
         // Get total pages count
-        $total_users = $UserQuery->get_total();
-        $total_pages = ceil($total_users / $users_per_page);
+        $total_posts = $PostQuery->found_posts;
+        $total_pages = ceil($total_posts / $posts_per_page);
 
         // If all users are grabbed or no results more
-        if ($current_page >= $total_pages || !count($UserQuery->results)) {
+        if ($current_page >= $total_pages || !count($PostQuery->posts)) {
             $response['data']['done'] = true;
         }
 

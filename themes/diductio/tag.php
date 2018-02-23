@@ -55,7 +55,7 @@ get_header();
 					<span class="screen-reader-text">Рубрики </span>
 						<?php
 						 if(isset($tag_id) && $tag_id)	{
-		    				$tag_categories = Post::getTagCategoriesBy($tag_id);
+		    				$tag_categories = Did_Post::getTagCategoriesBy($tag_id);
 
 		    				foreach ($tag_categories as $key => $value) { ?>
 		    					<span class="cat-links 2">

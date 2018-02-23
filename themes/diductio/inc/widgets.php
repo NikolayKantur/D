@@ -234,6 +234,10 @@ class WP_Widget_Recent_Comments_Mod extends
                 FROM `$table_name`
                 ORDER BY `comment_date` DESC
               ) AS wp_comments
+
+              INNER JOIN wp_posts as posts
+                ON posts.post_status = 'publish' AND posts.ID = wp_comments.comment_post_id
+              
               WHERE `comment_approved` = 1
               GROUP BY wp_comments.comment_post_id
               ORDER BY wp_comments.comment_date DESC
@@ -249,6 +253,10 @@ class WP_Widget_Recent_Comments_Mod extends
                 FROM `$table_name2`
                 ORDER BY `update_at` DESC
               ) AS wp_progres
+              
+              INNER JOIN wp_posts as posts
+                ON posts.post_status = 'publish' AND posts.ID = wp_progres.post_id
+
               WHERE wp_progres.update_at != '0000-00-00 00:00:00' 
               AND  wp_progres.checked_lessons != '0'
               GROUP BY  wp_progres.post_id

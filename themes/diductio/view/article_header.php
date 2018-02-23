@@ -18,7 +18,7 @@ if ($done_users) {
 
 <div class="article_header">
 	<?php if ( has_post_thumbnail() ){?>
-		<?php $format_badge = Post::getCurrentPostFormatBadge(); ?>
+		<?php $format_badge = Did_Post::getCurrentPostFormatBadge(); ?>
 	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')">
 		<span class="label label-<?php echo $format_badge['color'] ?> label-post-format">
 			<?php echo $format_badge['title'] ?>

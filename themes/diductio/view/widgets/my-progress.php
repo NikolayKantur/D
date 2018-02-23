@@ -27,7 +27,7 @@ $st = (new Did_Statistic)->oldStatisticClass;
 
     // Выводим фактический прогресс
     $actual_progress = $st->get_user_progress_by_post($knowledge->ID, $user_ID);
-    $estimated_progress = Did_User::getEstimatedProgressFor($knowledge); ?>
+    $estimated_progress = Did_User::getEstimatedProgressForKnowledge($knowledge); ?>
     
     <li class="widget-my-project-list">
         <div>

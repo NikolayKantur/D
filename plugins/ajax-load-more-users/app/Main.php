@@ -47,6 +47,7 @@ class Main {
     {
         $ajax_actions = array(
             'LoadMoreUsers' => 'almu_load_more_users',
+            'LoadMorePosts' => 'almu_load_more_posts',
         );
 
         foreach ($ajax_actions as $class_name => $action_alias) {

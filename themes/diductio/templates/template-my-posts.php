@@ -31,29 +31,32 @@ get_header(); ?>
                     </header>
                 <?php endif; ?>
         
+            <div id="post-entries">
                 <?php
                 // Start the loop.
                 while ( $Posts->have_posts() ) : $Posts->the_post(); ?>
                     
-					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                    <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-						<div class="entry-content <?=$removing_space_class;?>">
-							
-							<?php include(get_template_directory().'/view/article_header.php');?>
-							
-						</div>
-						
-					</article>
-					
-					<?php
+                        <div class="entry-content <?=$removing_space_class;?>">
+                            
+                            <?php include(get_template_directory().'/view/article_header.php');?>
+                            
+                        </div>
+                        
+                    </article>
+                    
+                    <?php
             
                     // End the loop.
-                endwhile;
-        
-                $postPerPage = get_option('posts_per_page');
-			
-			echo do_shortcode('[ajax_load_more post_status="any" author="'.$author->ID.'" offset="'.$postPerPage.'"  button_label="Загрузить еще" button_loading_label="Загружаем..."]');
-			
+                endwhile;?>
+            </div>
+                <?php $postPerPage = get_option('posts_per_page');
+            
+            // echo do_shortcode('[ajax_load_more post_status="any" author="'.$author->ID.'" offset="'.$postPerPage.'"  button_label="Загрузить еще" button_loading_label="Загружаем..."]');
+
+            echo do_shortcode('[ajax_load_more_users mode="posts" author="'.$author->ID.'" post_status="publish" per_page="' . $postPerPage . '" container="#post-entries"]');
+            
             // If no content, include the "No posts found" template.
             else :
                 get_template_part( 'templates/content/content', 'none' );

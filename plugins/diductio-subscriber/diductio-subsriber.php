@@ -401,6 +401,10 @@ class Diductio_subsriber extends WP_Widget {
 			FROM `$table_name`
 			ORDER BY `comment_date` DESC
 		  ) AS wp_comments
+		  
+		  LEFT JOIN wp_posts as posts
+            ON posts.post_status = 'publish' AND posts.ID = comment_post_id.post_id
+
 		  WHERE `comment_approved` = 1 
 		  {$progress_where}
 		  GROUP BY wp_comments.comment_post_id
@@ -408,6 +412,7 @@ class Diductio_subsriber extends WP_Widget {
 		  LIMIT $number";
 		//это SQL запрос прогресса 
 		$table_name2 = $wpdb->get_blog_prefix() . 'user_add_info';
+
 		$sql2  = "
 		  SELECT *
 		  FROM (
@@ -415,12 +420,17 @@ class Diductio_subsriber extends WP_Widget {
 			FROM `$table_name2`
 			ORDER BY `update_at` DESC
 		  ) AS wp_progres
+
+		  LEFT JOIN wp_posts as posts
+            ON posts.post_status = 'publish' AND posts.ID = wp_progres.post_id
+
           WHERE wp_progres.update_at != '0000-00-00 00:00:00' 
 		  AND  wp_progres.checked_lessons != '0'
 		  {$comments_where}
           GROUP BY  wp_progres.post_id
 		  ORDER BY  wp_progres.update_at DESC
 		  LIMIT $number";
+
 		//выполняем запроссы
 		$comments = array();
 		$progress = array();
@@ -499,6 +509,8 @@ class Diductio_subsriber extends WP_Widget {
 						$output .= "</span></a><small>". $small_text ."</small></div>";
 						$output .= "<div class='inline comment-content'>";
 						$output .= "<div class='comment-body'>";
+
+						// Если коммантерий
 						if($s['content'] != null ){
 						  $output .= diductio_excerp_comment(get_comment($s['id'])->comment_content, 67);
 						  $output .= "<a class='link-style-1' href='"
@@ -506,7 +518,7 @@ class Diductio_subsriber extends WP_Widget {
 						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
 							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
 							. get_the_title( $s['post_id'] ) . '</a>');
-						}else{
+						}else{ // Если прогресс
 						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
 							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
 							. get_the_title( $s['post_id'] ) . '</a>');

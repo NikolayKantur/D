@@ -8,6 +8,8 @@ Version: 1.0.0
 License: GPL 3.0
 */
 
+define('DIDUCTIO_PLUGIN_PATH', dirname(__FILE__));
+
 spl_autoload_register(
     function ($class) {
         // Don't interfere with other autoloaders
