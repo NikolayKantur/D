@@ -168,7 +168,7 @@ function diductio_my_scripts_method()
     
     // (14) Подключение bootstrap
     wp_register_script('diductio-bootstrap-js',
-        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js");
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js", ['jquery-ui-core'], false, true);
     wp_enqueue_script('diductio-bootstrap-js');
     
     // (14) Подключение bootstrap end
