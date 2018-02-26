@@ -33,12 +33,8 @@ get_header(); ?>
 			// End the loop.
 			endwhile;
 
-			// Previous/next page navigation.
-			the_posts_pagination( array(
-				'prev_text'          => __( 'Previous page', 'diductio' ),
-				'next_text'          => __( 'Next page', 'diductio' ),
-				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'diductio' ) . ' </span>',
-			) );
+			$postPerPage = get_option('posts_per_page');
+			echo do_shortcode('[ajax_load_more post_status="publish" offset="'.$postPerPage.'" search="' . get_search_query() . '" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
 
 		// If no content, include the "No posts found" template.
 		else :
