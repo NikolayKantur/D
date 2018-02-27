@@ -101,6 +101,25 @@ function diductio_scripts()
         'expand' => '<span class="screen-reader-text">' . __('expand child menu', 'diductio') . '</span>',
         'collapse' => '<span class="screen-reader-text">' . __('collapse child menu', 'diductio') . '</span>',
     ));
+
+
+    // (13 глобальный) Опции JS по умолчанию
+    $didaction_object = array(
+        'child_theme_url' => get_stylesheet_directory_uri(),
+        'ajax_path' => admin_url('admin-ajax.php'),
+    );
+    
+   
+    wp_enqueue_script('diductio-script-2', get_stylesheet_directory_uri() . "/js/javascripts.js", ['jquery'], false, true);
+
+    wp_localize_script('diductio-script-2', 'diductioObject', $didaction_object);
+    
+    // (14) Подключение bootstrap
+    wp_register_script('diductio-bootstrap-js',
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js", ['jquery-ui-core'], false, true);
+    wp_enqueue_script('diductio-bootstrap-js');
+    
+    // (14) Подключение bootstrap end
 }
 
 add_action('wp_enqueue_scripts', 'diductio_scripts');
@@ -150,37 +169,12 @@ function diductio_post_nav_background()
 
 add_action('wp_enqueue_scripts', 'diductio_post_nav_background');
 
-
-add_action('wp_enqueue_scripts', 'diductio_my_scripts_method');
-function diductio_my_scripts_method()
-{
-    wp_register_script('diductio-script', get_stylesheet_directory_uri() . "/js/javascripts.js");
-    // (13 глобальный) Опции JS по умолчанию
-    $didaction_object = array(
-        'child_theme_url' => get_stylesheet_directory_uri(),
-        'ajax_path' => admin_url('admin-ajax.php'),
-    );
-    
-    wp_localize_script('diductio-script', 'diductioObject', $didaction_object);
-    
-    
-    wp_enqueue_script('diductio-script');
-    
-    // (14) Подключение bootstrap
-    wp_register_script('diductio-bootstrap-js',
-        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js", ['jquery-ui-core'], false, true);
-    wp_enqueue_script('diductio-bootstrap-js');
-    
-    // (14) Подключение bootstrap end
-    
-}
-
 function diductio_add_styles() {
     wp_enqueue_style(
         'diductio-style', 
         get_template_directory_uri() . '/dist/styles/main.css', 
         array('diductio-deprecated-style'),
-        '2018-02-18'
+        '2018-02-26'
     );
 }
 add_action('wp_enqueue_scripts', 'diductio_add_styles', 100);
