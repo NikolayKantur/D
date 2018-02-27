@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Ajax Load More Users
+Plugin Name: Diductio Load More
 Description: Adds ajax loading for users queries
 Text Domain: ajax-load-more-users
 Author: Danil T.
