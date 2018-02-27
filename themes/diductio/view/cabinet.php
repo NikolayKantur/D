@@ -25,47 +25,46 @@ $st = (new Did_Statistic)->oldStatisticClass;
         </div>
     </div>
 </div>
-<?php if ($favorite_post_ids): ?>
-    <div class="wpfp-span public-page-statistic-box">
-        <ul>
-            <?php while (have_posts()) : the_post();
-                $author_id = get_the_author_meta('ID'); ?>
-                <?php
-                $passing_date = $dPost->get_passing_info_by_post($user_id, get_the_ID());
-                $added_by = Did_Statistic::addedBy(get_the_ID(), $user_id);
-                $percent = $st->get_user_progress_by_post(get_the_ID(), $user_id);
-                
-                if ($percent == 100) {
-                    $passed_rating = Did_Posts::getPassedPostRating(get_the_ID(), $user_id);
-                }
-                $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
-               
-                ?>
-                <li>
-                    <?php if($passed_rating): ?>
-                        <span data-toggle="tooltip" data-placement="top" title="Oценка системы" class="label <?=$passed_rating['class'];?> single_stat"><?=$passed_rating['value'];?>%</span>
+
+<div class="wpfp-span public-page-statistic-box">
+    <ul>
+        <?php while (have_posts()) : the_post();
+            $author_id = get_the_author_meta('ID'); ?>
+            <?php
+            $passing_date = $dPost->get_passing_info_by_post($user_id, get_the_ID());
+            $added_by = Did_Statistic::addedBy(get_the_ID(), $user_id);
+            $percent = $st->get_user_progress_by_post(get_the_ID(), $user_id);
+            
+            if ($percent == 100) {
+                $passed_rating = Did_Posts::getPassedPostRating(get_the_ID(), $user_id);
+            }
+            $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
+           
+            ?>
+            <li>
+                <?php if($passed_rating): ?>
+                    <span data-toggle="tooltip" data-placement="top" title="Oценка системы" class="label <?=$passed_rating['class'];?> single_stat"><?=$passed_rating['value'];?>%</span>
+                <?php endif; ?>
+                <a href="<?= get_permalink(); ?>"
+                   title="<?= get_the_title(); ?>">
+                    <?= get_the_title(); ?>
+                    <?php if ($author_id === $user_id): ?>
+                        <small class="is_author"> автор</small>
                     <?php endif; ?>
-                    <a href="<?= get_permalink(); ?>"
-                       title="<?= get_the_title(); ?>">
-                        <?= get_the_title(); ?>
-                        <?php if ($author_id === $user_id): ?>
-                            <small class="is_author"> автор</small>
-                        <?php endif; ?>
-                    </a>
-                    <?= $passing_string; ?>
-                    <?= diductio_add_progress(get_the_ID(), $user_id, false); ?>
-                    <?php if ($added_by && $added_by->ID != $user_id): ?>
-                        <div class="progress-on">
-                            Добавил:
-                            <a href="<?= get_site_url(); ?>/people/<?= $added_by->user_nicename ?>">
-                                <?=$added_by->display_name?>
-                            </a>
-                        </div>
-                    <?php endif; ?>
-                </li>
-                <?php unset($passed_rating); ?>
-            <?php endwhile; ?>
-        </ul>
-    </div>
-<?php endif; ?>
+                </a>
+                <?= $passing_string; ?>
+                <?= diductio_add_progress(get_the_ID(), $user_id, false); ?>
+                <?php if ($added_by && $added_by->ID != $user_id): ?>
+                    <div class="progress-on">
+                        Добавил:
+                        <a href="<?= get_site_url(); ?>/people/<?= $added_by->user_nicename ?>">
+                            <?=$added_by->display_name?>
+                        </a>
+                    </div>
+                <?php endif; ?>
+            </li>
+            <?php unset($passed_rating); ?>
+        <?php endwhile; ?>
+    </ul>
+</div>
 <!-- Cabinet end -->

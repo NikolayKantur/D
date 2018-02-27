@@ -10,7 +10,6 @@ global $st;
 
 $author_info = wp_get_current_user();
 $user_id = $author_info->ID;
-
 $favorite_post_ids = $st->get_knowledges($user_id);
 
 if($favorite_post_ids) {
