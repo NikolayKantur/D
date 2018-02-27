@@ -12,6 +12,8 @@ if ($username = get_query_var('username', null)) {
     $user_id  = $user_obj->ID;
 }
 
+$per_page = Did_User::COMMENTS_PER_PAGE;
+
 $user_comments = Did_User::getUserComments($user_id);
 
 ?>
@@ -37,7 +39,7 @@ $user_comments = Did_User::getUserComments($user_id);
         <?php if ($user_comments > $per_page): ?>
             <nav class="navigation pagination custom-page-wrapper" role="navigation">
                 <div class="nav-links custom-pagination">
-                    <?php echo Did_Pagination::getPaginationForUserComments(); ?>
+                    <?php echo Did_Pagination::getPaginationForUserComments($user_id); ?>
                 </div>
             </nav>
         <?php endif; ?>

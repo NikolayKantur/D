@@ -63,7 +63,7 @@ class Did_Admin extends Diductio
                     case "display_options":
                         settings_fields('diductio_main_settings');
                         $options = get_option('d_main_settings');
-                        Diductio::gi()->loadView('admin.settings', $options);
+                        Diductio::gi()->loadAdminView('admin.settings', $options);
                         submit_button();
                         break;
                 }

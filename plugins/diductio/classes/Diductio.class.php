@@ -143,7 +143,7 @@ class Diductio
         }
 	}
 
-    public function loadAdminView() {
+    public function loadAdminView($view_name, $data = false) {
         $view_path = DIDUCTIO_PLUGIN_PATH . DIRECTORY_SEPARATOR . "view" . DIRECTORY_SEPARATOR . "{$view_name}.php";
         if (file_exists($view_path)) {
             include_once($view_path);

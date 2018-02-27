@@ -15,14 +15,15 @@ class Did_Pagination
             'prev_text' => __('&laquo; Previous'), // text for previous page
             'next_text' => __('Next &raquo;'), // text for next page
             'total' => $total_pages, // the total number of pages we have
-            'current'  => $page,
+            'current'  => max(1, get_query_var('paged')),
             'end_size' => 1,
             'mid_size' => 5,
+            'prev_next' => true,
         ));
     }
 
-    public static function getPaginationForUserComments() {
-        $page      = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    public static function getPaginationForUserComments($user_id) {
+        $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
         $user_comments_total = get_comments(array(
             'orderby'    => 'post_date',

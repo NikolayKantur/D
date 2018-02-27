@@ -2,7 +2,7 @@
 
 class Did_User
 {
-    const COMMENTS_PER_PAGE = 60;
+    const COMMENTS_PER_PAGE = 10;
     const USERS_PER_PAGE = 10;
     /**
      * @var Did_Statistic

@@ -11,10 +11,12 @@ $my_subscribers = array_map(function ($author) {
     return $author['ID'];
 }, Did_User::getAllMySubscribers($author->ID));
 
-$UserQuery = Did_Users::getUsersQuery(array(
-    'include' => implode(',', $my_subscribers),
-    'number' => Did_User::USERS_PER_PAGE,
-));
+if($my_subscribers) {
+    $UserQuery = Did_Users::getUsersQuery(array(
+        'include' => implode(',', $my_subscribers),
+        'number' => Did_User::USERS_PER_PAGE,
+    ));
+}
 
 get_header(); ?>
 
@@ -41,11 +43,13 @@ get_header(); ?>
             </header>
         </article>
 
+        <?php if ( ! empty( $UserQuery->results ) ) { ?>
         <nav class="navigation pagination custom-page-wrapper" role="navigation">
             <div class="nav-links custom-pagination">
                 <?php echo Did_Pagination::getPaginationForSubscribers($UserQuery); ?>
             </div>
         </nav>
+        <?php } ?>
     </main><!-- .site-main -->
 </div><!-- .content-area -->
 
