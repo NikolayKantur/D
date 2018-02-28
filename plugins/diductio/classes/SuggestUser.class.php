@@ -133,7 +133,11 @@ class Did_SuggestUser
     public function getUsersByPost($post_id)
     {
         global $wpdb;
-        
+
+        if(!$post_id) {
+            return [];
+        }
+
         $sql = "SELECT `user_id` FROM `wp_user_add_info` WHERE `post_id` = {$post_id}";
         $result = $wpdb->get_results($sql, 'ARRAY_A');
         

@@ -326,14 +326,7 @@ class Diductio_subsriber extends WP_Widget {
 		wp_cache_delete('widget_recent_comments', 'widget');
 	}
 
-	/**
-	 * @global array  $comments
-	 * @global object $comment
-	 *
-	 * @param array $args
-	 * @param array $instance
-	 */
-	public function widget( $args, $instance ) {
+	public function for_is_logged_in($args, $instance) {
 		global $comments, $wpdb;
 
 		$cache = array();
@@ -401,15 +394,16 @@ class Diductio_subsriber extends WP_Widget {
 			FROM `$table_name`
 			ORDER BY `comment_date` DESC
 		  ) AS wp_comments
-		  
-		  LEFT JOIN wp_posts as posts
-            ON posts.post_status = 'publish' AND posts.ID = comment_post_id.post_id
+
+		  INNER JOIN wp_posts as posts
+            ON posts.post_status = 'publish' AND posts.ID = wp_comments.comment_post_id
 
 		  WHERE `comment_approved` = 1 
 		  {$progress_where}
 		  GROUP BY wp_comments.comment_post_id
 		  ORDER BY wp_comments.comment_date DESC
 		  LIMIT $number";
+
 		//это SQL запрос прогресса 
 		$table_name2 = $wpdb->get_blog_prefix() . 'user_add_info';
 
@@ -421,7 +415,7 @@ class Diductio_subsriber extends WP_Widget {
 			ORDER BY `update_at` DESC
 		  ) AS wp_progres
 
-		  LEFT JOIN wp_posts as posts
+		  INNER JOIN wp_posts as posts
             ON posts.post_status = 'publish' AND posts.ID = wp_progres.post_id
 
           WHERE wp_progres.update_at != '0000-00-00 00:00:00' 
@@ -545,6 +539,207 @@ class Diductio_subsriber extends WP_Widget {
 		}
 	}
 
+	public function for_is_logged_out($args, $instance) {
+		if( !is_user_logged_in() ){
+            
+            global $comments, $wpdb;
+            
+            $cache = array();
+            if (!$this->is_preview()) {
+                $cache = wp_cache_get('widget_recent_comments', 'widget');
+            }
+            if (!is_array($cache)) {
+                $cache = array();
+            }
+            
+            if (!isset($args['widget_id'])) {
+                $args['widget_id'] = $this->id;
+            }
+            
+            if (isset($cache[$args['widget_id']])) {
+                echo $cache[$args['widget_id']];
+                
+                return;
+            }
+            
+            $output = '';
+            
+            $title = 'Прямой эфир';
+            
+            /** This filter is documented in wp-includes/default-widgets.php */
+            $title = apply_filters('widget_title', $title, $instance, $this->id_base);
+            
+            $number = (!empty($instance['number'])) ? absint($instance['number']) : 5;
+            if (!$number) {
+                $number = 5;
+            }
+            
+            /**
+             * Filter the arguments for the Recent Comments widget.
+             *
+             * @since 3.4.0
+             * @see   WP_Comment_Query::query() for information on accepted arguments.
+             * @param array $comment_args An array of arguments used to retrieve the recent comments.
+             */
+            
+            /* Так как нельзя группировать то по Post_id пишем свой запрос
+            $comments = get_comments( apply_filters( 'widget_comments_args', array(
+                'number'      => 100,
+                'status'      => 'approve',
+                'post_status' => 'publish'
+            ) ) );*/
+            
+            //SQL запрос, получаем интересующие записи
+            $table_name = $wpdb->get_blog_prefix() . 'comments';
+            $sql
+                = "
+              SELECT *
+              FROM (
+                SELECT *
+                FROM `$table_name`
+                ORDER BY `comment_date` DESC
+              ) AS wp_comments
+
+              INNER JOIN wp_posts as posts
+                ON posts.post_status = 'publish' AND posts.ID = wp_comments.comment_post_id
+              
+              WHERE `comment_approved` = 1
+              GROUP BY wp_comments.comment_post_id
+              ORDER BY wp_comments.comment_date DESC
+              LIMIT $number";
+            
+            //это SQL запрос прогресса
+            $table_name2 = $wpdb->get_blog_prefix() . 'user_add_info';
+            $sql2
+                = "
+              SELECT *
+              FROM (
+                SELECT *
+                FROM `$table_name2`
+                ORDER BY `update_at` DESC
+              ) AS wp_progres
+              
+              INNER JOIN wp_posts as posts
+                ON posts.post_status = 'publish' AND posts.ID = wp_progres.post_id
+
+              WHERE wp_progres.update_at != '0000-00-00 00:00:00' 
+              AND  wp_progres.checked_lessons != '0'
+              GROUP BY  wp_progres.post_id
+              ORDER BY  wp_progres.update_at DESC
+              LIMIT $number";
+            
+            //выполняем запроссы
+            $progress = $wpdb->get_results($sql2);
+            $comments = $wpdb->get_results($sql);
+            $stream = [];
+            
+            //формируем ленту
+            if (is_array($comments) && $comments) {
+                foreach ((array)$comments as $comment) {
+                    
+                    //print_r($comment);
+                    $stream[] = Array(
+                        'id' => $comment->comment_ID,
+                        'post_id' => $comment->comment_post_ID,
+                        'user_id' => $comment->user_id,
+                        'update_at' => $comment->comment_date_gmt,
+                        'content' => $comment->comment_content,
+                    );
+                }
+            }
+            
+            if (is_array($progress) && $progress) {
+                foreach ((array)$progress as $progres) {
+                    $stream[] = Array(
+                        'post_id' => $progres->post_id,
+                        'user_id' => $progres->user_id,
+                        'update_at' => $progres->update_at,
+                        'content' => null,
+                    );
+                }
+            }
+            //сортируем по дате
+            usort($stream, 'sort_desc');
+            //обраезаем массив по колличеству из админки
+            $stream_n = array_slice($stream, 0, $number);
+            unset($stream);
+            
+            $output .= $args['before_widget'];
+            if ($title) {
+                $output .= $args['before_title'] . $title . $args['after_title'];
+            }
+            
+            #stat stream
+            $output .= '<ul id="recentcomments">';
+            if (is_array($stream_n) && $stream_n) {
+                
+                foreach ((array)$stream_n as $s) {
+                    $user_info = get_user_by('id', $s['user_id']);
+                    $user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+                    
+                    $output .= '<li class="recentcomments">';
+                    $output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
+                    $output .= get_avatar($user_info->data->user_email, 20);
+                    $output .= "<span>";
+                    $output .= $user_info->data->display_name;
+                    
+                    if ($s['content'] === null) {
+                        $small_text = "+ прогресс";
+                    } else {
+                        $comments_count = wp_count_comments($s['post_id']);
+                        $approved = $comments_count->approved;
+                        
+                        $small_text = "+ комментарий";
+                    }
+                    
+                    $output .= "</span></a><small>" . $small_text . "</small></div>";
+                    $output .= "<div class='inline comment-content'>";
+                    $output .= "<div class='comment-body'>";
+                    if ($s['content'] != null) {
+                        $output .= diductio_excerp_comment(get_comment($s['id'])->comment_content, 67);
+                        $output .= "<a class='link-style-1' href='"
+                            . esc_url(get_comment_link($s['id'])) . "'>&nbsp;#</a><br>";
+                        $output .= sprintf(_x('%1$s', 'widgets'), ' <a class="link-style-1" href="'
+                            . esc_url(get_permalink($s['post_id'])) . '"> '
+                            . get_the_title($s['post_id']) . '</a>');
+                    } else {
+                        $output .= sprintf(_x('%1$s', 'widgets'), ' <a class="link-style-1" href="'
+                            . esc_url(get_permalink($s['post_id'])) . '"> '
+                            . get_the_title($s['post_id']) . '</a>');
+                    }
+                    $output .= "<span></span></div>";
+                    $output .= "</div>";
+                    $output .= "</li>";
+                }
+            }
+            $output .= '</ul>';
+            ##end stream
+            $output .= $args['after_widget'];
+            echo $output;
+            
+            if (!$this->is_preview()) {
+                $cache[$args['widget_id']] = $output;
+                wp_cache_set('widget_recent_comments', $cache, 'widget');
+            }
+        
+        }
+	}
+
+	/**
+	 * @global array  $comments
+	 * @global object $comment
+	 *
+	 * @param array $args
+	 * @param array $instance
+	 */
+	public function widget( $args, $instance ) {
+		if(is_user_logged_in()) {
+			$this->for_is_logged_in($args, $instance);
+		} else {
+			$this->for_is_logged_out($args, $instance);
+		}
+	}
+
 	/**
 	 * @param array $new_instance
 	 * @param array $old_instance
@@ -661,7 +856,7 @@ function suggest_me_user()
 	foreach ($include as $user) {
 		if (!in_array($user['id'], $already_subscribed)) {
 			do_action('subscriber_added', $user, $post_id);
-			add_post_to_statistic($post_id, $user['id']);
+			diductio_add_post_to_statistic($post_id, $user['id']);
 			$dPost->addToFavorite($post_id, $user['id']);
 		}
 	}
@@ -730,6 +925,10 @@ function isSubsribedToMe($user)
 function getUsersByPost($post_id)
 {
 	global $wpdb;
+
+	if(!$post_id) {
+        return [];
+    }
 	
 	$sql = "SELECT `user_id` FROM `wp_user_add_info` WHERE `post_id` = {$post_id}";
 	$result = $wpdb->get_results($sql, 'ARRAY_A');
