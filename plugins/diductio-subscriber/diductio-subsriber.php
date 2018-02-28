@@ -401,7 +401,7 @@ class Diductio_subsriber extends WP_Widget {
 			FROM `$table_name`
 			ORDER BY `comment_date` DESC
 		  ) AS wp_comments
-		  
+
 		  LEFT JOIN wp_posts as posts
             ON posts.post_status = 'publish' AND posts.ID = comment_post_id.post_id
 
@@ -661,7 +661,7 @@ function suggest_me_user()
 	foreach ($include as $user) {
 		if (!in_array($user['id'], $already_subscribed)) {
 			do_action('subscriber_added', $user, $post_id);
-			add_post_to_statistic($post_id, $user['id']);
+			diductio_add_post_to_statistic($post_id, $user['id']);
 			$dPost->addToFavorite($post_id, $user['id']);
 		}
 	}

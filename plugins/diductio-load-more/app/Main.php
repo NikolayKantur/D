@@ -7,11 +7,6 @@ use AjaxLoadMoreUsers\App\AdminInterface\Pages;
 class Main {
     public function init() 
     {
-        if (!class_exists('AjaxLoadMore')) 
-        {
-            return;
-        }
-
         $this->initLanguage();
         $this->addShortcode();
 
