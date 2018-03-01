@@ -46,6 +46,10 @@ class Did_Statistic_Old extends Diductio
      */
     public $busy_peoples = 0;
 
+
+    private static $_busy_peoples = 0;
+    private static $_free_peoples_count = 0;
+
     /**
      * Statistic constructor.
      */
@@ -314,21 +318,28 @@ class Did_Statistic_Old extends Diductio
      */
     public function get_busy_peoples()
     {
-        global $wpdb;
+        if(self::$_busy_peoples > 0) {
+            return self::$_busy_peoples;
+        } else {
+            global $wpdb;
 
-        $stat_table = Diductio::gi()->settings['stat_table'];
-        $sql        = "SELECT *, ";
-        $sql .= "IF(`checked_lessons` = 0, 0,(LENGTH(`checked_lessons`) - LENGTH(REPLACE(`checked_lessons`, ',', '')) + 1) ) as `checked_count` ";
-        $sql .= "FROM {$stat_table} ";
-        $sql .= "HAVING `lessons_count` != `checked_count`";
-        $busy_people = $wpdb->get_results($sql, ARRAY_A);
-        $result      = array();
+            $stat_table = Diductio::gi()->settings['stat_table'];
+            $sql        = "SELECT *, ";
+            $sql .= "IF(`checked_lessons` = 0, 0,(LENGTH(`checked_lessons`) - LENGTH(REPLACE(`checked_lessons`, ',', '')) + 1) ) as `checked_count` ";
+            $sql .= "FROM {$stat_table} ";
+            $sql .= "HAVING `lessons_count` != `checked_count`";
+            $busy_people = $wpdb->get_results($sql, ARRAY_A);
+            $result      = array();
 
-        foreach ($busy_people as $people) {
-            $result[$people['user_id']] = $people['user_id'];
+            foreach ($busy_people as $people) {
+                $result[$people['user_id']] = $people['user_id'];
+            }
+
+            self::$_busy_peoples = $result;
+
+            return self::$_busy_peoples;
         }
-
-        return $result;
+        
     }
 
     /**
@@ -338,7 +349,15 @@ class Did_Statistic_Old extends Diductio
      */
     public function get_free_peoples()
     {
-        return $this->get_all_users() - count($this->busy_peoples);
+        if(self::$_free_peoples_count > 0) {
+            // echo '----1----';
+            return $_free_peoples_count;
+        } else {
+            // echo '----0----';
+            self::$_free_peoples_count = $this->get_all_users() - count($this->busy_peoples);
+
+            return self::$_free_peoples_count;
+        }
     }
 
 
@@ -760,6 +779,8 @@ class Did_Statistic_Old extends Diductio
     
     function get_users_by_post($post_id)
     {
+        // return array();
+        
         global $dUser;
 
         $post_stat = $this->get_course_info($post_id);
