@@ -396,12 +396,17 @@ class Did_Statistic_Old extends Diductio
     {
         global $current_user, $wpdb;
 
-        $done          = $in_progress = 0;
-        $user_done_ids = $user_active_ids = array();
+        $progress = null;
 
-        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-        $sql        = "SELECT * FROM `$table_name` WHERE `post_id` = {$course_id}";
-        $progress   = $wpdb->get_results($sql);
+        if($course_id) {
+            $done          = $in_progress = 0;
+            $user_done_ids = $user_active_ids = array();
+
+            $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+            $sql        = "SELECT * FROM `$table_name` WHERE `post_id` = {$course_id}";
+            $progress   = $wpdb->get_results($sql);
+        }
+        
         if ($progress) {
         	$users_started = array();
             foreach ($progress as $key => $value) {

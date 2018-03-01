@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Accordion Shortcodes
+ * Plugin Name: Diductio Accordion Shortcodes
  * Description: Shortcodes for creating responsive accordion drop-downs.
  * Version: 999.2.4
  * Author: Phil Buchanan

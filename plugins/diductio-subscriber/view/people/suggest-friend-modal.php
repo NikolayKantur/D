@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body all-users">
                 <div class="row">
-                    <?php if($suggesting_users): ?>
+                    <?php if($suggesting_users): // Добавлять можно лишь тем, у кого есть взаимные подписки ?>
                         <?php foreach ($suggesting_users as $user):
                             $Did_Categories = new Did_Categories();
                             
