@@ -14,8 +14,6 @@
 <?php else: ?>
 
 	 <?php 
-	 $is_author_page = $GLOBALS['author_info']->data->user_login;
-	 
 	 if(!$is_author_page): ?>
 		Ваша зачетка пуста.
 	 <?php endif; ?>

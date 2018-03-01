@@ -1,12 +1,3 @@
-
-<div class="stat-col">
-    <div class="add-to-favor-wrapper">
-                <span class="wpfp-span">
-                    <a id="suggest-to-user" data-toggle="modal" data-target="#suggestUser">Добавить</a>
-                </span>
-    </div>
-</div>
-
 <!-- Modal -->
 <div class="modal fade bs-example-modal-lg" id="suggestUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -44,7 +35,7 @@
                                     <div id="user-selecting" class="col-md-1">
                                         <input <?php if($user->is_selected && $current_user->ID != $post->post_author): ?>disabled="disabled"<?php endif;?> <?php if($user->is_selected): ?> checked="checked" <?php endif;?> data-hasChecked="<?php if($user->is_selected): ?>1<?php else: ?>0<?php endif; ?>" id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
                                     </div>
-                                    <?php view(
+                                    <?php diductio_view(
                                         'people.single-row',
                                         compact(
                                             'user_statistic',

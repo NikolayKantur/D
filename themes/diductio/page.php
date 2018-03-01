@@ -10,6 +10,9 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
+
+$st = (new Did_Statistic)->oldStatisticClass;
+
 get_header();
 ?>
 
@@ -28,7 +31,7 @@ get_header();
 		while ( have_posts() ) : the_post();
 
 			// Include the page content template.
-			get_template_part( 'content', 'page' );
+			get_template_part( 'templates/content/content', 'page' );
 
 			// If comments are open or we have at least one comment, load up the comment template.
 			if ( comments_open() || get_comments_number() ) :

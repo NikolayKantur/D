@@ -10,32 +10,19 @@ $post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
 $work_time = (int)get_post_meta($post->ID, 'work_time', true);
 
 if ($done_users) {
-    $done_args = array(
-        'role__in' => $roles,
-    );
     $done_args['include'] = $done_users;
     $done_users_array = new WP_User_Query($done_args);
 }
 
-$post_formats_map = array(
-	'aside' => ['Знание', 'success'],
-	'image' => ['Тест', 'success'],
-	'quote' => ['Проект', 'important'],
-	'video' => ['Видео', 'success'],
-	'gallery' => ['Задача', 'important'],
-	'chat' => ['Голосование', 'important'],
-);
-
-$current_post_format = get_post_format();
-$current_post_format_title = $post_formats_map[$current_post_format][0];
-$current_post_format_color = $post_formats_map[$current_post_format][1];
 ?>
 
 <div class="article_header">
 	<?php if ( has_post_thumbnail() ){?>
-	
+		<?php $format_badge = Did_Post::getCurrentPostFormatBadge(); ?>
 	<div class="article_header-img " style="background-image:url('<?php echo get_the_post_thumbnail_url(); ?>')">
-		<span class="label label-<?php echo $current_post_format_color ?> label-post-format"><?php echo $current_post_format_title ?></span>
+		<span class="label label-<?php echo $format_badge['color'] ?> label-post-format">
+			<?php echo $format_badge['title'] ?>
+		</span>
 	</div>
 	
 	<div class="article_header-infoWrp withImg format-<?php echo get_post_format();?>">
@@ -75,7 +62,7 @@ $current_post_format_color = $post_formats_map[$current_post_format][1];
 						if (!empty($active_users_array->results)) {
 							$end = (count($active_users_array->results) < 4)
 								? count($active_users_array->results)
-								: 4 /* hardcode */
+								: 4
 							;
 							for ($i = 0; $i < $end; $i++) {
 								$additional_class = ($i + 1 == $end) ? 'last-inline' : '';
@@ -105,7 +92,7 @@ $current_post_format_color = $post_formats_map[$current_post_format][1];
 						if (!empty($done_users_array->results)) {
 							$end = (count($done_users_array->results) < 4)
 								? count($done_users_array->results)
-								: 4 /* hardcode */
+								: 4
 							;
 							for ($i = 0; $i < $end; $i++) {
 								$additional_class = ($i + 1 == $end) ? 'last-inline' : '';
@@ -147,7 +134,7 @@ $current_post_format_color = $post_formats_map[$current_post_format][1];
 		</div>
 		
 		<div class="article_header-metaWrp entry-footer">
-			<?php twentyfifteen_entry_meta(); ?>
+			<?php diductio_entry_meta(); ?>
 			<?php edit_post_link( __( 'Edit', 'diductio' ), '<span class="edit-link">', '</span>' ); ?>
 		</div>
 		
@@ -169,7 +156,7 @@ $current_post_format_color = $post_formats_map[$current_post_format][1];
 							 *
 							 * @param int $size The avatar height and width size in pixels.
 							 */
-							$author_bio_avatar_size = apply_filters( 'twentyfifteen_author_bio_avatar_size', 46 );
+							$author_bio_avatar_size = apply_filters( 'diductio_author_bio_avatar_size', 46 );
 
 							echo get_avatar( get_the_author_meta( 'user_email', $authorID ), $author_bio_avatar_size );
 							?>
@@ -197,34 +184,12 @@ $current_post_format_color = $post_formats_map[$current_post_format][1];
 	</div>
 	
 	<div class="clr"></div>
-	
-	
+
 		<?php
-		$current_user_id = get_current_user_id();
-		$current_user_progress = false;
-		$posts_users = $st->get_users_by_post($post->ID);
-		// Find total progress
-		$total_progress = 0;
-		$num_users = 0;
-		foreach ($posts_users as $user) {
-			// Get current user progress
-			if ($current_user_id
-				&& isset($user['user_id'])
-				&& $user['user_id'] === $current_user_id
-			) {
-				$current_user_progress = $user['progress'];
-			}
-			if (isset($user['progress'])
-				&& $user['progress'] > 0 // if more than zero
-			) {
-				$total_progress += $user['progress'];
-				++$num_users;
-			}
-		}
-		if ($total_progress > 0
-			&& $num_users > 1
-		) {
-			$total_progress = round($total_progress / $num_users, 2);
+		$total_progress = Did_User::getTotalProgress();
+
+		if ($total_progress) {
+			
 			?>
 			
 			<div>
@@ -238,8 +203,6 @@ $current_post_format_color = $post_formats_map[$current_post_format][1];
 			
 			<?php
 		}
-		
 		?>
-			
 	<div class="clr"></div>
 </div>

@@ -18,12 +18,6 @@ get_header(); ?>
 			<?php
 			// Start the loop.
 			while ( have_posts() ) : the_post();
-
-				/*
-				 * Include the Post-Format-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-				 */
 				 
 				?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -39,18 +33,11 @@ get_header(); ?>
 
 			$postPerPage = get_option('posts_per_page');
 			
-			echo do_shortcode('[ajax_load_more post_status="any" offset="'.$postPerPage.'" category="'.$category->slug.'" cache="true" cache_id="cache-'.$category->slug.'" tag="'.$tag.'" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" taxonomy_operator="IN" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
+			// echo do_shortcode('[ajax_load_more post_status="any" offset="'.$postPerPage.'" category="'.$category->slug.'" cache="true" cache_id="cache-'.$category->slug.'" tag="'.$tag.'" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" taxonomy_operator="IN" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
 			
-			/* Previous/next page navigation.
-			the_posts_pagination( array(
-				'prev_text'          => __( 'Previous page', 'diductio' ),
-				'next_text'          => __( 'Next page', 'diductio' ),
-				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'diductio' ) . ' </span>',
-			) );*/
-
                         // If no content, include the "No posts found" template.
                         else :
-                                get_template_part( 'content', 'none' );
+                                get_template_part( 'templates/content/content', 'none' );
 
                         endif;
                         

@@ -14,6 +14,7 @@ add_action('wp_enqueue_scripts', 'load_scripts', 99);
 add_filter('template_include', 'portfolio_page_template', 99);
 add_action('widgets_init', 'WidgetInit');
 add_action('single-after-stat-row', 'suggestUsers');
+add_action('wp_footer', 'suggestUsers_modal');
 add_action('init', 'subscriber_init');
 
 
@@ -21,7 +22,7 @@ add_action('init', 'subscriber_init');
 function load_scripts(){
     wp_enqueue_style('diductio_subscriber_style', plugin_dir_url(__FILE__) . 'css/style.css');
     wp_enqueue_script('diductio_script', plugin_dir_url(__FILE__) . '/js/subscriber-script.js', array('jquery'), 1.1, true);
-    wp_localize_script('twentyfifteen-script', 'didAjax', array('url' => admin_url('admin-ajax.php')));
+    wp_localize_script('diductio-script', 'didAjax', array('url' => admin_url('admin-ajax.php')));
     wp_register_script('suggest-user', plugin_dir_url(__FILE__) . "js/suggest_user.js");
     wp_enqueue_script('suggest-user');
     wp_enqueue_style('suggest-user-css', plugin_dir_url(__FILE__) . 'css/suggest_user.css');
@@ -333,7 +334,7 @@ class Diductio_subsriber extends WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		global $comments, $comment, $wpdb;
+		global $comments, $wpdb;
 
 		$cache = array();
 		if ( ! $this->is_preview() ) {
@@ -400,6 +401,10 @@ class Diductio_subsriber extends WP_Widget {
 			FROM `$table_name`
 			ORDER BY `comment_date` DESC
 		  ) AS wp_comments
+
+		  LEFT JOIN wp_posts as posts
+            ON posts.post_status = 'publish' AND posts.ID = comment_post_id.post_id
+
 		  WHERE `comment_approved` = 1 
 		  {$progress_where}
 		  GROUP BY wp_comments.comment_post_id
@@ -407,6 +412,7 @@ class Diductio_subsriber extends WP_Widget {
 		  LIMIT $number";
 		//это SQL запрос прогресса 
 		$table_name2 = $wpdb->get_blog_prefix() . 'user_add_info';
+
 		$sql2  = "
 		  SELECT *
 		  FROM (
@@ -414,12 +420,17 @@ class Diductio_subsriber extends WP_Widget {
 			FROM `$table_name2`
 			ORDER BY `update_at` DESC
 		  ) AS wp_progres
+
+		  LEFT JOIN wp_posts as posts
+            ON posts.post_status = 'publish' AND posts.ID = wp_progres.post_id
+
           WHERE wp_progres.update_at != '0000-00-00 00:00:00' 
 		  AND  wp_progres.checked_lessons != '0'
 		  {$comments_where}
           GROUP BY  wp_progres.post_id
 		  ORDER BY  wp_progres.update_at DESC
 		  LIMIT $number";
+
 		//выполняем запроссы
 		$comments = array();
 		$progress = array();
@@ -498,14 +509,16 @@ class Diductio_subsriber extends WP_Widget {
 						$output .= "</span></a><small>". $small_text ."</small></div>";
 						$output .= "<div class='inline comment-content'>";
 						$output .= "<div class='comment-body'>";
+
+						// Если коммантерий
 						if($s['content'] != null ){
-						  $output .= excerp_comment(get_comment($s['id'])->comment_content, 67);
+						  $output .= diductio_excerp_comment(get_comment($s['id'])->comment_content, 67);
 						  $output .= "<a class='link-style-1' href='"
 							. esc_url( get_comment_link( $s['id'] ) ) ."'>&nbsp;#</a><br>";
 						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
 							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
 							. get_the_title( $s['post_id'] ) . '</a>');
-						}else{
+						}else{ // Если прогресс
 						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
 							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
 							. get_the_title( $s['post_id'] ) . '</a>');
@@ -601,6 +614,15 @@ function suggestUsers()
 	global $st, $post, $current_user;
 	if (is_user_logged_in()) {
 		$suggesting_users = getSuggestingUsers(get_current_user_id(), $post->ID);
+        pluginView('people.suggest-friend-header', compact('suggesting_users', 'st', 'post', 'current_user'));
+	}
+}
+
+function suggestUsers_modal()
+{
+	global $st, $post, $current_user;
+	if (is_user_logged_in()) {
+		$suggesting_users = getSuggestingUsers(get_current_user_id(), $post->ID);
         pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st', 'post', 'current_user'));
 	}
 }
@@ -639,7 +661,7 @@ function suggest_me_user()
 	foreach ($include as $user) {
 		if (!in_array($user['id'], $already_subscribed)) {
 			do_action('subscriber_added', $user, $post_id);
-			add_post_to_statistic($post_id, $user['id']);
+			diductio_add_post_to_statistic($post_id, $user['id']);
 			$dPost->addToFavorite($post_id, $user['id']);
 		}
 	}

@@ -24,7 +24,7 @@
             <?php if($will_busy_days):?><span class="inline">, занят еще <?=$will_busy_days;?></span><?php endif;?>
             <div class="about"><?=get_user_meta($author_info->ID, 'description')[0]; ?></div>
             <div class="user-categories">
-                <?php view('user-category-static', compact('user_statistic','category_statistic', 'author_info', 'tag_statistic')); ?>
+                <?php diductio_view('user-category-static', compact('user_statistic','category_statistic', 'author_info', 'tag_statistic')); ?>
             </div>
         </div>
     </div>

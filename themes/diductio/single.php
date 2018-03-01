@@ -6,34 +6,30 @@
  * @subpackage Twenty_Fifteen
  * @since      Twenty Fifteen 1.0
  */
-global $wp_roles, $post, $dUser, $st, $dPost;
-
-$roles = array();
-foreach ($wp_roles->roles as $rKey => $rvalue) {
-    $roles[] = $rKey;
-}
+global $post, $dUser, $st, $dPost;
 
 $post_statistic = $st->get_course_info($post->ID);
 $post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
 $post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
+
 $active_users = $post_statistic['active_users'];
 $done_users = $post_statistic['done_users'];
 
 if ($active_users) {
     $act_args = array(
-        'role__in' => $roles,
+        'include' => $active_users,
     );
-    $act_args['include'] = $active_users;
     $active_users_array = new WP_User_Query($act_args);
 }
-
-$work_time = (int)get_post_meta($post->ID, 'work_time', true);
 
 // suggest users
 $suggestUser = new Did_SuggestUser();
 if (is_user_logged_in()) {
     $suggesting_users = $suggestUser->getSuggestingUsers(get_current_user_id(), $post->ID);
 }
+
+$current_user_id = get_current_user_id();
+$posts_users = $st->get_users_by_post($post->ID);
 
 get_header(); ?>
 
@@ -43,51 +39,25 @@ get_header(); ?>
 	
 	<div id="user-activity" class="row">
 		
-		<?php
-		$current_user_id = get_current_user_id();
-		$posts_users = $st->get_users_by_post($post->ID);
-		
-		foreach ( $posts_users as $user ){
+		<?php 
+        foreach ( $posts_users as $user ){
 			if ( $user['user_id'] == $current_user_id ){
 				$current_user_progress = $user['progress'];
+                break;
 			}
 		}
 		
 		// Estimated progress
-		$estimated_progress = 0;
+		$estimated_progress = Did_User::getEstimatedProgressForPost($post->ID);
 		$estimated_progress_class = '';
 		
 		if (isset($post_statistic['users_started'][$current_user_id])) {
-			$started = $post_statistic['users_started'][$current_user_id];
-			$now = date_create();
-			$start = date_create($started);
-			// date_add() modifies $end object
-			$end = date_create($started);
-			date_add($end, date_interval_create_from_date_string($work_time . ' days'));
-			$diff = date_diff($now, $start);
-			$countdown = date_diff($end, $now);
 			
-			$diff_h_in_days = $diff->h > 0
-				? $diff->h / 24
-				: 0;
-			$estimated_progress = 0;
-			
-			if ($work_time) {
-				$estimated_progress = round(
-					(
-						($diff->days + $diff_h_in_days) / $work_time
-					) * 100,
-					2
-				);
-			}
-			
-			if ($estimated_progress > 0
-				&& $current_user_progress < 100 // Hide estimated progress if user completed all tasks
-			) {
+            // Hide estimated progress if user completed all tasks
+			if ($estimated_progress > 0 && $current_user_progress < 100 ) {
 				$prefix_word = 'Ещё';
 				
-				if ($estimated_progress >= 100) {
-					$estimated_progress = 100; // Fix: if $diff->days > $work_time
+				if ($estimated_progress === 100) {
 					$prefix_word = 'Уже';
 					$estimated_progress_class = 'progress-bar-danger progress-bar-striped';
 				}
@@ -107,8 +77,8 @@ get_header(); ?>
 					</div>
 				</div>
 				<?php
-			} // if ( $estimated_progress > 0 )
-		} // if ( isset( $post_statistic['users_started'][ $current_user_id ] ) )
+			} 
+		}
 		
 		$end = count($posts_users) >= 2 ? 2 : count($posts_users);
 		for ($i = 0; $i < $end; $i++):

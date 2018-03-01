@@ -62,7 +62,7 @@
 			return;
 		}
 
-		button.on( 'click.twentyfifteen', function() {
+		button.on( 'click.diductio', function() {
 			secondary.toggleClass( 'toggled-on' );
 			secondary.trigger( 'resize' );
 			$( this ).toggleClass( 'toggled-on' );
@@ -159,14 +159,14 @@
 		adminbarOffset = $body.is( '.admin-bar' ) ? $( '#wpadminbar' ).height() : 0;
 
 		$window
-			.on( 'scroll.twentyfifteen', scroll )
-			.on( 'load.twentyfifteen', onResizeARIA )
-			.on( 'resize.twentyfifteen', function() {
+			.on( 'scroll.diductio', scroll )
+			.on( 'load.diductio', onResizeARIA )
+			.on( 'resize.diductio', function() {
 				clearTimeout( resizeTimer );
 				resizeTimer = setTimeout( resizeAndScroll, 500 );
 				onResizeARIA();
 			} );
-		$sidebar.on( 'click.twentyfifteen keydown.twentyfifteen', 'button', resizeAndScroll );
+		$sidebar.on( 'click.diductio keydown.diductio', 'button', resizeAndScroll );
 
 		resizeAndScroll();
 

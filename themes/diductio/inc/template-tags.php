@@ -9,13 +9,13 @@
  * @since Twenty Fifteen 1.0
  */
 
-if ( ! function_exists( 'twentyfifteen_comment_nav' ) ) :
+if ( ! function_exists( 'diductio_comment_nav' ) ) :
 /**
  * Display navigation to next/previous comments when applicable.
  *
  * @since Twenty Fifteen 1.0
  */
-function twentyfifteen_comment_nav() {
+function diductio_comment_nav() {
 	// Are there comments to navigate through?
 	if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) :
 	?>
@@ -39,14 +39,14 @@ function twentyfifteen_comment_nav() {
 endif;
 
 /*
-if ( ! function_exists( 'twentyfifteen_entry_meta' ) ) :
+if ( ! function_exists( 'diductio_entry_meta' ) ) :
 /**
  * Prints HTML with meta information for the categories, tags.
  *
  * @since Twenty Fifteen 1.0
  *
 
-function twentyfifteen_entry_meta() {
+function diductio_entry_meta() {
 	if ( is_sticky() && is_home() && ! is_paged() ) {
 		printf( '<span class="sticky-post">%s</span>', __( 'Featured', 'diductio' ) );
 	}
@@ -91,7 +91,7 @@ function twentyfifteen_entry_meta() {
 		}
 
 		$categories_list = get_the_category_list( _x( ', ', 'Used between list items, there is a space after the comma.', 'diductio' ) );
-		if ( $categories_list && twentyfifteen_categorized_blog() ) {
+		if ( $categories_list && diductio_categorized_blog() ) {
 			printf( '<span class="cat-links"><span class="screen-reader-text">%1$s </span>%2$s</span>',
 				_x( 'Categories', 'Used before category names.', 'diductio' ),
 				$categories_list
@@ -135,8 +135,8 @@ endif;
  *
  * @return bool True of there is more than one category, false otherwise.
  */
-function twentyfifteen_categorized_blog() {
-	if ( false === ( $all_the_cool_cats = get_transient( 'twentyfifteen_categories' ) ) ) {
+function diductio_categorized_blog() {
+	if ( false === ( $all_the_cool_cats = get_transient( 'diductio_categories' ) ) ) {
 		// Create an array of all the categories that are attached to posts.
 		$all_the_cool_cats = get_categories( array(
 			'fields'     => 'ids',
@@ -149,31 +149,31 @@ function twentyfifteen_categorized_blog() {
 		// Count the number of categories that are attached to the posts.
 		$all_the_cool_cats = count( $all_the_cool_cats );
 
-		set_transient( 'twentyfifteen_categories', $all_the_cool_cats );
+		set_transient( 'diductio_categories', $all_the_cool_cats );
 	}
 
 	if ( $all_the_cool_cats > 1 ) {
-		// This blog has more than 1 category so twentyfifteen_categorized_blog should return true.
+		// This blog has more than 1 category so diductio_categorized_blog should return true.
 		return true;
 	} else {
-		// This blog has only 1 category so twentyfifteen_categorized_blog should return false.
+		// This blog has only 1 category so diductio_categorized_blog should return false.
 		return false;
 	}
 }
 
 /**
- * Flush out the transients used in {@see twentyfifteen_categorized_blog()}.
+ * Flush out the transients used in {@see diductio_categorized_blog()}.
  *
  * @since Twenty Fifteen 1.0
  */
-function twentyfifteen_category_transient_flusher() {
+function diductio_category_transient_flusher() {
 	// Like, beat it. Dig?
-	delete_transient( 'twentyfifteen_categories' );
+	delete_transient( 'diductio_categories' );
 }
-add_action( 'edit_category', 'twentyfifteen_category_transient_flusher' );
-add_action( 'save_post',     'twentyfifteen_category_transient_flusher' );
+add_action( 'edit_category', 'diductio_category_transient_flusher' );
+add_action( 'save_post',     'diductio_category_transient_flusher' );
 
-if ( ! function_exists( 'twentyfifteen_post_thumbnail' ) ) :
+if ( ! function_exists( 'diductio_post_thumbnail' ) ) :
 /**
  * Display an optional post thumbnail.
  *
@@ -182,7 +182,7 @@ if ( ! function_exists( 'twentyfifteen_post_thumbnail' ) ) :
  *
  * @since Twenty Fifteen 1.0
  */
-function twentyfifteen_post_thumbnail() {
+function diductio_post_thumbnail() {
 	if ( post_password_required() || is_attachment() || ! has_post_thumbnail() ) {
 		return;
 	}
@@ -206,7 +206,7 @@ function twentyfifteen_post_thumbnail() {
 }
 endif;
 
-if ( ! function_exists( 'twentyfifteen_get_link_url' ) ) :
+if ( ! function_exists( 'diductio_get_link_url' ) ) :
 /**
  * Return the post URL.
  *
@@ -218,14 +218,14 @@ if ( ! function_exists( 'twentyfifteen_get_link_url' ) ) :
  *
  * @return string The Link format URL.
  */
-function twentyfifteen_get_link_url() {
+function diductio_get_link_url() {
 	$has_url = get_url_in_content( get_the_content() );
 
 	return $has_url ? $has_url : apply_filters( 'the_permalink', get_permalink() );
 }
 endif;
 
-if ( ! function_exists( 'twentyfifteen_excerpt_more' ) && ! is_admin() ) :
+if ( ! function_exists( 'diductio_excerpt_more' ) && ! is_admin() ) :
 /**
  * Replaces "[...]" (appended to automatically generated excerpts) with ... and a 'Continue reading' link.
  *
@@ -233,7 +233,7 @@ if ( ! function_exists( 'twentyfifteen_excerpt_more' ) && ! is_admin() ) :
  *
  * @return string 'Continue reading' link prepended with an ellipsis.
  */
-function twentyfifteen_excerpt_more( $more ) {
+function diductio_excerpt_more( $more ) {
 	$link = sprintf( '<a href="%1$s" class="more-link">%2$s</a>',
 		esc_url( get_permalink( get_the_ID() ) ),
 		/* translators: %s: Name of current post */
@@ -241,10 +241,10 @@ function twentyfifteen_excerpt_more( $more ) {
 		);
 	return ' &hellip; ' . $link;
 }
-add_filter( 'excerpt_more', 'twentyfifteen_excerpt_more' );
+add_filter( 'excerpt_more', 'diductio_excerpt_more' );
 endif;
 
-if ( ! function_exists( 'twentyfifteen_the_custom_logo' ) ) :
+if ( ! function_exists( 'diductio_the_custom_logo' ) ) :
 /**
  * Displays the optional custom logo.
  *
@@ -252,7 +252,7 @@ if ( ! function_exists( 'twentyfifteen_the_custom_logo' ) ) :
  *
  * @since Twenty Fifteen 1.5
  */
-function twentyfifteen_the_custom_logo() {
+function diductio_the_custom_logo() {
 	if ( function_exists( 'the_custom_logo' ) ) {
 		the_custom_logo();
 	}
