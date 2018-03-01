@@ -25,11 +25,3 @@ spl_autoload_register(
         require $path;
     }
 );
-
-function diductio_run() {
-    if (is_admin()) {
-        $Admin = new Did_Admin();
-    }
-}
-
-add_action('plugins_loaded', 'diductio_run');

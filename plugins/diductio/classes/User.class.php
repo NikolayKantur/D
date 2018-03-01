@@ -167,6 +167,10 @@ class Did_User
     
         $diff_h_in_days = $diff->h > 0 ? $diff->h / 24 : 0; 
 
+        if(!$work_time) {
+            $work_time = 1;
+        }
+
         $estimated_progress = round( ( ($diff->days + $diff_h_in_days) / $work_time ) * 100, 2);
 
         if ($estimated_progress >= 100) {
