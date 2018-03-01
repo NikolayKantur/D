@@ -354,10 +354,19 @@ class Did_Statistic_Old extends Diductio
             return $_free_peoples_count;
         } else {
             // echo '----0----';
-            self::$_free_peoples_count = $this->get_all_users() - count($this->busy_peoples);
+            self::$_free_peoples_count = $this->get_count_of_all_users() - count($this->busy_peoples);
 
             return self::$_free_peoples_count;
         }
+    }
+
+    public function get_count_of_all_users() {
+        global $wpdb;
+
+        $sql = "SELECT COUNT(*) FROM wp_users";
+        $result = $wpdb->get_var($sql);
+
+        return $result;
     }
 
 
@@ -672,6 +681,7 @@ class Did_Statistic_Old extends Diductio
         $post_stat    = $this->get_course_info($post_id);
         $target_users = array_merge($post_stat['active_users'], $post_stat['done_users']);
         $result       = array();
+
         foreach ($target_users as $user) {
             $user_info        = get_user_by('id', $user);
             $tmp['username']  = $user_info->display_name;
