@@ -27,6 +27,7 @@ $st = (new Did_Statistic)->oldStatisticClass;
 </div>
 
 <div class="wpfp-span public-page-statistic-box">
+    <?php if($favorite_post_ids) : ?>
     <ul>
         <?php while (have_posts()) : the_post();
             $author_id = get_the_author_meta('ID'); ?>
@@ -66,5 +67,6 @@ $st = (new Did_Statistic)->oldStatisticClass;
             <?php unset($passed_rating); ?>
         <?php endwhile; ?>
     </ul>
+    <?php endif; ?>
 </div>
 <!-- Cabinet end -->
