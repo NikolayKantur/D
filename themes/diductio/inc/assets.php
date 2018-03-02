@@ -174,7 +174,7 @@ function diductio_add_styles() {
         'diductio-style', 
         get_template_directory_uri() . '/dist/styles/main.css', 
         array('diductio-deprecated-style'),
-        '2018-02-26'
+        '2018-03-02'
     );
 }
 add_action('wp_enqueue_scripts', 'diductio_add_styles', 100);

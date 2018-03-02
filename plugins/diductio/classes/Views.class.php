@@ -72,6 +72,8 @@ class Did_Views
         $author_info = wp_get_current_user();
         $user_id = $author_info->ID;
 
+        $favorite_post_ids = $st->get_knowledges($user_id);
+
         $user_statistic = $st->get_user_info();
         $user_statistic['author'] = Did_User::getAllMyPosts($user_id);
 
