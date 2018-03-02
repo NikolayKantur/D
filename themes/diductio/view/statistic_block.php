@@ -146,7 +146,7 @@ $user_statistic['subscribers'] = count(Did_User::getAllMySubscribers($user_id));
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
-                    <a href="/avtor/<?= $data->custom_url; ?>">
+                    <a href="<?php echo str_replace('//', '/', '/avtor/' . $data->custom_url); ?>">
                         <span class="label label-success <?php if(!is_page('avtor')) : ?>label-soft<?php endif; ?>">Автор</span>
                         <span class="label label-success"><?= $data->allMyPosts; ?></span>
                     </a>

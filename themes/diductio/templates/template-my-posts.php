@@ -9,6 +9,12 @@ $username = get_query_var('username');
 $author = $username ? get_user_by('slug', $username) : wp_get_current_user();
 
 if($author && $author->ID) {
+    $post_status = 'publish';
+    
+    if($author->ID === get_current_user_id()) {
+        $post_status = 'any';
+    }
+
     $current_page = get_query_var('paged', 1);
 
     $Posts = new Wp_Query(array(
@@ -52,10 +58,8 @@ get_header(); ?>
                 endwhile;?>
             </div>
                 <?php $postPerPage = get_option('posts_per_page');
-            
-            // echo do_shortcode('[ajax_load_more post_status="any" author="'.$author->ID.'" offset="'.$postPerPage.'"  button_label="Загрузить еще" button_loading_label="Загружаем..."]');
 
-            echo do_shortcode('[ajax_load_more_users mode="posts" author="'.$author->ID.'" post_status="publish" per_page="' . $postPerPage . '" container="#post-entries"]');
+            echo do_shortcode('[ajax_load_more_users mode="posts" author="'.$author->ID.'" post_status="' . $post_status . '" per_page="' . $postPerPage . '" container="#post-entries"]');
             
             // If no content, include the "No posts found" template.
             else :

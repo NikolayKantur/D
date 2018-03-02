@@ -14,6 +14,8 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 
 	class Accordion_Shortcodes {
 
+		public static $accordion_exsit = false;
+
 		/**
 		 * Current plugin version number
 		 */
@@ -333,6 +335,7 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			if ( in_array( $ids['accourdion_count'], $checked_lessons ) ) {
 				$checkbox_attr = "checked='checked' disabled='disabled'";
 			}
+
 			if ( is_user_logged_in() && $isMine ) {
 				$checkbox_html = "<div class='col-md-1' style='height:0;'><div style='height: 22px;' class='checkbox'>
    <input type='checkbox'
@@ -383,7 +386,7 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 				$passed_users
 			);
 			if ( $accordion_content ) {
-				$GLOBALS['accordion_exsit'] = true;
+				self::$accordion_exsit = true;
 			}
 
 			return $accordion_title . $accordion_content;
