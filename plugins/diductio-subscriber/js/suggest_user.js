@@ -22,7 +22,7 @@ var suggestToUserClass = function () {
 
     this.sendAjax = function (data, callback) {
         var url = diductioObject.ajax_path;
-        $.ajax({
+        jQuery.ajax({
             type: 'POST',
             url: url,
             data: data,
@@ -37,35 +37,35 @@ var suggestToUserClass = function () {
      *
      */
     this.init = function(){
-        $('#save-subscribers').click(function(){
-            self.save($(this));
+        jQuery('#save-subscribers').click(function(){
+            self.save(jQuery(this));
         });
     };
 
     this.save = function (target) {
         var users = [];
-        $(target).text('Подождите...');
+        jQuery(target).text('Подождите...');
 
         // collect data
-        $(".suggested-user").each(function(){
+        jQuery(".suggested-user").each(function(){
             var user = {};
-            user.id = $(this).data('user');
-            user.wasChecked = $(this).data('haschecked') == 1;
-            user.alreadyHas = $(this).is(':checked') == 1;
+            user.id = jQuery(this).data('user');
+            user.wasChecked = jQuery(this).data('haschecked') == 1;
+            user.alreadyHas = jQuery(this).is(':checked') == 1;
             users.push(user);
         });
         var data =  {
             action: "suggestUsers",
             users: users,
-            postid: $('#postid').val()
+            postid: jQuery('#postid').val()
         };
 
         // send ajax
         if(users) {
             self.sendAjax(data, function () {
-                $('#suggestUser').modal('toggle');
+                jQuery('#suggestUser').modal('toggle');
                 window.location.reload();
-                $(target).text('Сохранить');
+                jQuery(target).text('Сохранить');
             });
         }
     };
