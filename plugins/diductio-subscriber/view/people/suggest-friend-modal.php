@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade bs-example-modal-lg" id="suggestUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
-        <input type="hidden" id="postid" value="<?=$post->ID?>">
+        <input type="hidden" id="postid" value="<?=$post->ID?>" autocomplete="off">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -9,8 +9,10 @@
             </div>
             <div class="modal-body all-users">
                 <div class="row">
-                    <?php if($suggesting_users): // Добавлять можно лишь тем, у кого есть взаимные подписки ?>
-                        <?php foreach ($suggesting_users as $user):
+                    <?php 
+
+                    if($suggesting_users): // Добавлять можно лишь тем, у кого есть взаимные подписки 
+                        foreach ($suggesting_users as $user):
                             $Did_Categories = new Did_Categories();
                             
                             $user_id = $user->ID;
@@ -27,13 +29,31 @@
                                 ->fetchTagsByUser($user_id)
                                 ->orderBy('value', 'desc')
                                 ->max();
-        
-        
+
+                            $is_selected = $user->is_selected;
+                            $has_checked = $is_selected ? 1: 0;
+
+                            $is_disabled = false;
+                            if($is_selected && $current_user->ID != $post->post_author) {
+                                $is_disabled = true;    
+                            }
+                            
                             ?>
+
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">
                                     <div id="user-selecting" class="col-md-1">
-                                        <input <?php if($user->is_selected && $current_user->ID != $post->post_author): ?>disabled="disabled"<?php endif;?> <?php if($user->is_selected): ?> checked="checked" <?php endif;?> data-hasChecked="<?php if($user->is_selected): ?>1<?php else: ?>0<?php endif; ?>" id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
+                                        <input <?php
+
+                                        if($is_selected) : 
+                                            echo ' checked';
+                                        endif;
+
+                                        if($is_disabled) : 
+                                            echo ' disabled';
+                                        endif;
+
+                                        ?> data-hasChecked="<?php echo $has_checked ?>" id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" autocomplete="off">
                                     </div>
                                     <?php diductio_view(
                                         'people.single-row',

@@ -9,10 +9,6 @@
  * @since Twenty Fifteen 1.0
  */
 global $st; 
-$accordion_exist = false;
-if(class_exists('Accordion_Shortcodes')) {
-    $accordion_exist = Accordion_Shortcodes::$accordion_exsit;
-}
 
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -41,7 +37,14 @@ if(class_exists('Accordion_Shortcodes')) {
         ?>
 
         <!-- (17) Добавление чекбокса на страницу с отсутствующим акордеоном -->
-        <?php if ( is_single()): ?>
+        <?php if ( is_single()): 
+
+            $accordion_exist = false;
+            if(class_exists('Accordion_Shortcodes')) {
+                $accordion_exist = Accordion_Shortcodes::$accordion_exsit;
+            }
+
+        ?>
             <?php if(!$accordion_exist):
                 $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
                 $user_id = get_current_user_id();
