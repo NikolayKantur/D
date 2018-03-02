@@ -194,7 +194,7 @@ class Did_Posts
     public static function getPostsFormatMap() {
         return array(
             'aside' => ['Знание', 'success'],
-            'image' => ['Тест', 'success'],
+            'image' => ['Тест', 'important'],
             'quote' => ['Проект', 'important'],
             'video' => ['Видео', 'success'],
             'gallery' => ['Задача', 'important'],
