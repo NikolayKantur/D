@@ -43,3 +43,5 @@ require get_template_directory() . '/inc/extras.php';
 $Did_static = new Did_Statistic();
 $dCommenst = new Did_Comments();
 $Did_static->initAjax();
+
+

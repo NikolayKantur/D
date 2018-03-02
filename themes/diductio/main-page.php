@@ -14,7 +14,9 @@ get_header(); ?>
                     <h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
                 </header>
             <?php endif; ?>
-                        
+
+            <iv id="post-entries">
+
             <?php
             // Start the loop.
             while ( have_posts() ) : the_post();
@@ -27,11 +29,11 @@ get_header(); ?>
                 </article>
                 
                 <?php
-
             // End the loop.
-            endwhile;
+            endwhile; ?>
+            </div>
 
-            $postPerPage = get_option('posts_per_page');
+            <?php $postPerPage = get_option('posts_per_page');
 
             echo do_shortcode('[ajax_load_more_users mode="posts" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" category="'.$category->slug.'" tag="'.$tag.'" post_status="publish" per_page="' . $postPerPage . '" container="#post-entries"]');
             
