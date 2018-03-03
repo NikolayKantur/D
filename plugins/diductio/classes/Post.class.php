@@ -449,6 +449,7 @@ class Did_Post extends Diductio
         // find total progress
         $total_progress = 0;
         $num_users = 0;
+        
         foreach ($posts_users as $user) {
             if ( $current_user_id && isset( $user['user_id'] ) && $user['user_id'] === $current_user_id) {
                 $current_user_progress = $user['progress'];

@@ -77,8 +77,21 @@ class Wrapper
             unset($query_args['search']);
         }
 
-        // $CustomOrdersManager = new CustomOrdersManager();
-        // $query_args = $CustomOrdersManager->applyCustomOrder($query_args);
+        // Check for logged or unauthorized users
+        if(is_user_logged_in() && $query_args['post_status'] === 'any') {
+            global $wpdb;
+
+            $user_id = get_current_user_id();
+
+            $sql = '
+            SELECT ID FROM wp_posts
+            WHERE post_status = "private" AND post_author != %d';
+
+            $excluded_ids = $wpdb->get_col($wpdb->prepare($sql, [$user_id]), 0);
+
+
+            $query_args['post__not_in'] = $excluded_ids;
+        }
 
         // Create the WP_User_Query object
         $UserQuery = new \WP_Query($query_args);
