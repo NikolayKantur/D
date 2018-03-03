@@ -22,7 +22,14 @@ $st = (new Did_Statistic)->oldStatisticClass;
         </a>
     </li> 
     
-<?php $i = 0; foreach ($knowledges as $knowledge) :            
+<?php
+
+$showed_ids = [];
+$i = 0; foreach ($knowledges as $knowledge) :  
+    if(in_array($knowledge->ID, $showed_ids)) {
+        continue;
+    }          
+
     $added_by = Did_Statistic::addedBy($knowledge->ID, $user_ID);
 
     // Выводим фактический прогресс
@@ -67,7 +74,9 @@ $st = (new Did_Statistic)->oldStatisticClass;
         
     </li>
     
-<?php endforeach; ?>
+<?php 
+    $showed_ids[] = $knowledge->ID;
+endforeach; ?>
     
     <!-- Navigation  -->
     <li class='row'>

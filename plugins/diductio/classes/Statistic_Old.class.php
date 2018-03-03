@@ -789,18 +789,20 @@ class Did_Statistic_Old extends Diductio
     
     function get_users_by_post($post_id)
     {
-        // return array();
-        
         global $dUser;
 
         $post_stat = $this->get_course_info($post_id);
         $result       = array();
+
         if ($post_stat['active_users'] || $post_stat['done_users']) {
             $target_users = array_merge($post_stat['active_users'], $post_stat['done_users']);
+            $target_users = array_unique($target_users);
+            
             foreach ($target_users as $user) {
                 $user_info       = get_user_by('id', $user);
                 $tmp             = $dUser->getUserData($user_info->ID);
                 $tmp['progress'] = $this->get_user_progress_by_post($post_id, $user);
+
                 $result[]        = $tmp;
             }
             unset($tmp);

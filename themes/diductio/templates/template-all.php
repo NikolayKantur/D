@@ -1,10 +1,19 @@
 <?php
-    /*
-    * Template Name: Шаблон "Все записи"
-    * Description: Шаблон показывает все записи для авторизированого пользователя
-    */
-    $wp_query = new WP_Query(array('posts_per_page'=>10));
-    get_header(); 
+/*
+* Template Name: Шаблон "Все записи"
+* Description: Шаблон показывает все записи для авторизированого пользователя
+*/
+$wp_query = new WP_Query(array('posts_per_page'=>10));
+
+$username = get_query_var('username');
+$user = $username ? get_user_by('slug', $username) : wp_get_current_user();
+
+$post_status = 'publish';
+if($user && $user->ID) {
+    $post_status = 'any';
+}
+
+get_header(); 
 ?>
 
     <div id="primary" class="content-area">     
@@ -55,9 +64,7 @@
             
             <?php $postPerPage = get_option('posts_per_page');
             
-            // echo do_shortcode('[ajax_load_more post_status="any" offset="'.$postPerPage.'" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
-
-            echo do_shortcode('[ajax_load_more_users mode="posts" post_status="publish" per_page="' . $postPerPage . '" container="#post-entries"]');
+            echo do_shortcode('[ajax_load_more_users mode="posts" post_status="' . $post_status . '" per_page="' . $postPerPage . '" container="#post-entries"]');
 
                         // If no content, include the "No posts found" template.
                         else :

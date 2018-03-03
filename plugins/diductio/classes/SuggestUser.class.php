@@ -90,6 +90,7 @@ class Did_SuggestUser
     public function getSuggestingUsers($user_id, $post_id)
     {
         $all_users = [];
+        
         $subscribed_to = get_user_meta($user_id, 'subscribe_to')[0];
         $already_subscribed = $this->getUsersByPost($post_id);
         

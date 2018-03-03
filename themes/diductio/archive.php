@@ -17,6 +17,14 @@
  */
 get_header();
 
+$username = get_query_var('username');
+$user = $username ? get_user_by('slug', $username) : wp_get_current_user();
+
+$post_status = 'publish';
+if($user && $user->ID) {
+    $post_status = 'any';
+}
+
 $queried_object = get_queried_object();
 
 $tax = $queried_object->taxonomy;
@@ -59,10 +67,8 @@ $category = get_category (get_query_var('cat'));
             </div>
 
             <?php $postPerPage = get_option('posts_per_page');
-           
-            // echo do_shortcode('[ajax_load_more post_status="any" offset="'.$postPerPage.'" category="'.$category->slug.'" tag="'.$tag.'" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" taxonomy_operator="IN" button_label="Загрузить еще" button_loading_label="Загружаем..."]');
 
-            echo do_shortcode('[ajax_load_more_users mode="posts" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" category="'.$category->slug.'" tag="'.$tag.'" post_status="publish" per_page="' . $postPerPage . '" container="#post-entries"]');
+            echo do_shortcode('[ajax_load_more_users mode="posts" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" category="'.$category->slug.'" tag="'.$tag.'" post_status="' . $post_status . '" per_page="' . $postPerPage . '" container="#post-entries"]');
 
         // If no content, include the "No posts found" template.
         else :

@@ -1,5 +1,14 @@
 <?php
-get_header(); ?>
+get_header(); 
+
+$username = get_query_var('username');
+$user = $username ? get_user_by('slug', $username) : wp_get_current_user();
+
+$post_status = 'publish';
+if($user && $user->ID && $user->ID === get_current_user_id()) {
+    $post_status = 'any';
+}
+?>
 
     <div id="primary" class="content-area">     
             
@@ -34,7 +43,7 @@ get_header(); ?>
 
             <?php $postPerPage = get_option('posts_per_page');
 
-            echo do_shortcode('[ajax_load_more_users mode="posts" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" category="'.$category->slug.'" tag="'.$tag.'" post_status="publish" per_page="' . $postPerPage . '" container="#post-entries"]');
+            echo do_shortcode('[ajax_load_more_users mode="posts" taxonomy="'. $tax .'" taxonomy_terms="'. $tax_term .'" category="'.$category->slug.'" tag="'.$tag.'" post_status="' . $post_status . '" per_page="' . $postPerPage . '" container="#post-entries"]');
             
                         // If no content, include the "No posts found" template.
                         else :

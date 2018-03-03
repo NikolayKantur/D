@@ -81,7 +81,13 @@ get_header(); ?>
 		}
 		
 		$end = count($posts_users) >= 2 ? 2 : count($posts_users);
+
+        $showed_ids = [];
 		for ($i = 0; $i < $end; $i++):
+            if(in_array($posts_users[$i]['user_id'], $showed_ids)) {
+                continue;
+            }
+            
 			$passing_date = $dPost->get_passing_info_by_post($posts_users[$i]['user_id'], $post->ID);
 			?>
 			<div class="col-sm-6 col-md-6">
@@ -100,7 +106,11 @@ get_header(); ?>
 					</div>
 				</div>
 			</div>
-		<?php endfor; ?>
+		<?php 
+            $showed_ids[] = $posts_users[$i]['user_id'];
+
+        endfor; ?>
+
 			<div class="row">
 				<div class="col-md-4 col-md-offset-8 more-users">
 				<?php do_action('single-after-stat-row') ?>
