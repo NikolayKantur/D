@@ -283,8 +283,8 @@ class MLWQuizMasterNext {
 	 */
 	public function admin_head() {
 		remove_submenu_page( 'index.php', 'qsm_about' );
-		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_options' );
-		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_result_details' );
+		remove_submenu_page( 'diductio-certification/mlw_quizmaster2.php', 'mlw_quiz_options' );
+		remove_submenu_page( 'diductio-certification/mlw_quizmaster2.php', 'mlw_quiz_result_details' );
 	}
 }
 
